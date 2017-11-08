@@ -1,35 +1,67 @@
 webpackJsonpac__name_([17],{
 
-/***/ "./src/app/MeasurementAndDosageSizes/MeasurementAndDosageSizes.component.ts":
+/***/ "./src/app/chemist/chemist.component.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var MeasurementAndDosageSizesService_1 = __webpack_require__("./src/app/services/MeasurementAndDosageSizesService.ts");
-var MeasurementComponent = (function () {
-    function MeasurementComponent(_addMeasurementService, router) {
-        this._addMeasurementService = _addMeasurementService;
+var AddCategoryService_1 = __webpack_require__("./src/app/services/AddCategoryService.ts");
+var ChemistComponent = (function () {
+    function ChemistComponent(_addCategoryService, router) {
+        var _this = this;
+        this._addCategoryService = _addCategoryService;
         this.router = router;
+        this._addCategoryService.getCateogry().subscribe(function (response) {
+            //  console.log(response);
+            _this.catergories = response.data;
+        });
     }
-    MeasurementComponent.prototype.AddMeasurement = function () {
+    ChemistComponent.prototype.addCategoryValues = function () {
         var _this = this;
-        this._addMeasurementService.AddMeasurementService(this.MeasurementName, this.MeasurementSymbol).subscribe(function (response) {
+        this.chemistId = localStorage.getItem("chemistId");
+        this.parentId = 0;
+        this._addCategoryService.addCategory(this.chemistId, this.categoryName, this.parentId).subscribe(function (response) {
             console.log(response);
             jQuery("#snackbar1").html(response.message);
             _this.myFunction();
         });
     };
-    MeasurementComponent.prototype.AddDosageAndSize = function () {
+    ChemistComponent.prototype.addSubcateogry = function () {
         var _this = this;
-        this._addMeasurementService.AddDosageAndSizeService(this.DosageName, this.DosageSymbol).subscribe(function (response) {
-            console.log(response);
-            jQuery("#snackbar1").html(response.message);
-            _this.myFunction();
-        });
+        this.chemistId = localStorage.getItem("chemistId");
+        this.parentId = 1;
+        if (this.subCategoryName == undefined) {
+            alert("please fill empty fields");
+        }
+        else {
+            //this._addunitService.addunit(this.dosagename,this.dosagevalue);
+            if (this.chemistId != undefined && this.parentId != undefined && this.subCategoryName != undefined) {
+                this._addCategoryService.addSubcategory(this.chemistId, this.subCategoryName, this.categoryId).subscribe(function (response) {
+                    console.log(response);
+                    jQuery("#snackbar1").html(response.message);
+                    _this.myFunction();
+                });
+            }
+            else {
+                jQuery("#snackbar1").html("Invalid Credenntials");
+                this.myFunction();
+            }
+        }
     };
-    MeasurementComponent.prototype.myFunction = function () {
+    ChemistComponent.prototype.searchResult = function () {
+        this.router.navigate(['/app', 'extra', 'search']);
+    };
+    ChemistComponent.prototype.getCategoryId = function (chemistid) {
+        this.chemistId = chemistid;
+        console.log(this.chemistId);
+    };
+    ChemistComponent.prototype.getCategory = function (categoryId) {
+        console.log(categoryId);
+        this.categoryId = categoryId;
+    };
+    ChemistComponent.prototype.myFunction = function () {
         // Get the snackbar DIV
         var x = document.getElementById("snackbar1");
         // Add the "show" class to DIV
@@ -37,29 +69,29 @@ var MeasurementComponent = (function () {
         // After 3 seconds, remove the show class from DIV
         setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
     };
-    MeasurementComponent = __decorate([
+    ChemistComponent = __decorate([
         core_1.Component({
-            selector: 'Measurement',
-            providers: [MeasurementAndDosageSizesService_1.MeasurementAndDosageSizesService],
-            styles: [__webpack_require__("./src/app/MeasurementAndDosageSizes/MeasurementAndDosageSizes.style.scss")],
-            template: __webpack_require__("./src/app/MeasurementAndDosageSizes/MeasurementAndDosageSizes.template.html"),
+            selector: 'chemist',
+            providers: [AddCategoryService_1.AddCategoryService],
+            styles: [__webpack_require__("./src/app/chemist/chemist.style.scss")],
+            template: __webpack_require__("./src/app/chemist/chemist.template.html"),
             encapsulation: core_1.ViewEncapsulation.None,
             host: {
-                class: 'dosage-page app'
+                class: 'chemist-page app'
             },
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof MeasurementAndDosageSizesService_1.MeasurementAndDosageSizesService !== 'undefined' && MeasurementAndDosageSizesService_1.MeasurementAndDosageSizesService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
-    ], MeasurementComponent);
-    return MeasurementComponent;
+        __metadata('design:paramtypes', [(typeof (_a = typeof AddCategoryService_1.AddCategoryService !== 'undefined' && AddCategoryService_1.AddCategoryService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+    ], ChemistComponent);
+    return ChemistComponent;
     var _a, _b;
 }());
-exports.MeasurementComponent = MeasurementComponent;
+exports.ChemistComponent = ChemistComponent;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
 
 /***/ },
 
-/***/ "./src/app/MeasurementAndDosageSizes/MeasurementAndDosageSizes.module.ts":
+/***/ "./src/app/chemist/chemist.module.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68,18 +100,18 @@ var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var MeasurementAndDosageSizes_component_1 = __webpack_require__("./src/app/MeasurementAndDosageSizes/MeasurementAndDosageSizes.component.ts");
+var chemist_component_1 = __webpack_require__("./src/app/chemist/chemist.component.ts");
 exports.routes = [
-    { path: '', component: MeasurementAndDosageSizes_component_1.MeasurementComponent, pathMatch: 'full' }
+    { path: '', component: chemist_component_1.ChemistComponent, pathMatch: 'full' }
 ];
-var MeasurementModule = (function () {
-    function MeasurementModule() {
+var ChemistModule = (function () {
+    function ChemistModule() {
     }
-    MeasurementModule.routes = exports.routes;
-    MeasurementModule = __decorate([
+    ChemistModule.routes = exports.routes;
+    ChemistModule = __decorate([
         core_1.NgModule({
             declarations: [
-                MeasurementAndDosageSizes_component_1.MeasurementComponent
+                chemist_component_1.ChemistComponent
             ],
             imports: [
                 common_1.CommonModule,
@@ -88,30 +120,30 @@ var MeasurementModule = (function () {
             ]
         }), 
         __metadata('design:paramtypes', [])
-    ], MeasurementModule);
-    return MeasurementModule;
+    ], ChemistModule);
+    return ChemistModule;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = MeasurementModule;
+exports.default = ChemistModule;
 
 
 /***/ },
 
-/***/ "./src/app/MeasurementAndDosageSizes/MeasurementAndDosageSizes.style.scss":
+/***/ "./src/app/chemist/chemist.style.scss":
 /***/ function(module, exports) {
 
-module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n#MedicineCategory {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 139px;\n  margin-left: 29px;\n  margin-bottom: 14px; }\n\n.AddMeasurement {\n  position: relative;\n  color: white;\n  text-align: center;\n  background-color: grey;\n  float: left; }\n\n#AddMeasurement button {\n  background: none;\n  border: 1px solid #ccc;\n  padding: 8px;\n  font-weight: bold;\n  width: auto;\n  display: inline-block;\n  margin-right: 10px;\n  margin-top: 10px; }\n\n#MedicineDosage {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 139px;\n  margin-left: 37px; }\n\n#dosageValue {\n  margin-bottom: 12px; }\n\n#SelectDosageValue {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 139px;\n  margin-left: 2px; }\n\n#MedicineMeasurement {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 139px;\n  margin-left: 2px; }\n\n#MedicineSubCategory {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 167px;\n  margin-left: 25px; }\n\n#measurementName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n.addbtn {\n  width: 235px;\n  background-color: white; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n#snackbar1 {\n  visibility: hidden;\n  /* Hidden by default. Visible on click */\n  min-width: 250px;\n  /* Set a default minimum width */\n  margin-left: -125px;\n  /* Divide value of min-width by 2 */\n  background-color: #333;\n  /* Black background color */\n  color: #fff;\n  /* White text color */\n  text-align: center;\n  /* Centered text */\n  border-radius: 2px;\n  /* Rounded borders */\n  padding: 16px;\n  /* Padding */\n  position: fixed;\n  /* Sit on top of the screen */\n  z-index: 1;\n  /* Add a z-index if needed */\n  left: 50%;\n  /* Center the snackbar */\n  bottom: 30px;\n  /* 30px from the bottom */ }\n\n#SelectMeasurement {\n  display: inline-flex;\n  margin-bottom: 3px; }\n\n#SelectDosage {\n  display: inline-block; }\n\n#SelectCategory {\n  display: inline-flex; }\n\n#SelectSubCategory {\n  display: inline-flex; }\n\n.AddMedicine {\n  max-width: 600px;\n  min-width: 300px;\n  margin: 0 auto; }\n\n.AddDosage {\n  width: 312px; }\n\n.AddSize {\n  width: 297px; }\n\n/* Show the snackbar when clicking on a button (class added with JavaScript) */\n#snackbar1.show {\n  visibility: visible;\n  /* Show the snackbar */\n  /* Add animation: Take 0.5 seconds to fade in and out the snackbar. \r\nHowever, delay the fade out process for 2.5 seconds */\n  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;\n  animation: fadein 0.5s, fadeout 0.5s 2.5s; }\n\n/* Animations to fade the snackbar in and out */\n@-webkit-keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@-webkit-keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n\n@keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n"
+module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n#measurementName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n.addbtn {\n  width: 235px;\n  background-color: white; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n#snackbar1 {\n  visibility: hidden;\n  /* Hidden by default. Visible on click */\n  min-width: 250px;\n  /* Set a default minimum width */\n  margin-left: -125px;\n  /* Divide value of min-width by 2 */\n  background-color: #333;\n  /* Black background color */\n  color: #fff;\n  /* White text color */\n  text-align: center;\n  /* Centered text */\n  border-radius: 2px;\n  /* Rounded borders */\n  padding: 16px;\n  /* Padding */\n  position: fixed;\n  /* Sit on top of the screen */\n  z-index: 1;\n  /* Add a z-index if needed */\n  left: 50%;\n  /* Center the snackbar */\n  bottom: 30px;\n  /* 30px from the bottom */ }\n\n.AddDosage {\n  width: 297px; }\n\n.AddSize {\n  width: 297px; }\n\n/* Show the snackbar when clicking on a button (class added with JavaScript) */\n#snackbar1.show {\n  visibility: visible;\n  /* Show the snackbar */\n  /* Add animation: Take 0.5 seconds to fade in and out the snackbar. \r\nHowever, delay the fade out process for 2.5 seconds */\n  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;\n  animation: fadein 0.5s, fadeout 0.5s 2.5s; }\n\n/* Animations to fade the snackbar in and out */\n@-webkit-keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@-webkit-keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n\n@keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n"
 
 /***/ },
 
-/***/ "./src/app/MeasurementAndDosageSizes/MeasurementAndDosageSizes.template.html":
+/***/ "./src/app/chemist/chemist.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div id=\"snackbar1\"></div>\r\n<div class=\"row\">\r\n<div class=\"col-md-6\">\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xl-4 col-md-6 col-xs-10 offset-xl-4 offset-md-3 offset-xs-1\">\r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          sing\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login AddDosage animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"font-size:36px;font-weight:900\">ADD MEASUREMENT</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n              <div class=\"form-group\">\r\n                <input type=\"text\" class=\"form-control\" [(ngModel)]=\"MeasurementName\" name=\"MeasurementSymbol\" id=\"exampleInputEmail1\" placeholder=\"Enter Measurement Name\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <input type=\"text\" class=\"form-control\" [(ngModel)]=\"MeasurementSymbol\" name=\"MeasurementSymbol\" id=\"exampleInputEmail1\" placeholder=\"Enter Measurement Symbol\">\r\n              </div>\r\n              \r\n              <div class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                  <a class=\"btn addbtn btn-inverse btn-sm\" (click)=\"AddMeasurement()\">Add</a>\r\n                </div>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                   <!--  <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div> -->\r\n                  </div>\r\n                </div>\r\n\r\n               <!--  <div class=\"col-md-6 pull-md-6\">\r\n                  <a class=\"mr-n-lg\" href=\"#\">Trouble with account?</a>\r\n                </div> -->\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n      </div>\r\n    </div>\r\n  </main>\r\n <!--  <footer class=\"page-footer\">\r\n    2016 &copy; Sing. Admin Dashboard Template.\r\n  </footer> -->\r\n</div>\r\n</div>\r\n\r\n<div id=\"snackbar1\"></div>\r\n<div class=\"col-md-6\">\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xl-4 col-md-6 col-xs-10 offset-xl-4 offset-md-3 offset-xs-1\">\r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          sing\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login  AddSize animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"font-size:36px;font-weight:900\">ADD DOSAGE AND SIZES</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n              <div class=\"form-group\">\r\n                <input type=\"text\" class=\"form-control\" [(ngModel)]=\"DosageName\" name=\"DosageName\" id=\"exampleInputEmail1\" placeholder=\"Enter Dosage Name\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <input class=\"form-control\" id=\"pswd\" [(ngModel)]=\"DosageSymbol\" name=\"DosageName\" type=\"text\" placeholder=\"Enter Dosage Symbol\">\r\n              </div>\r\n \r\n              <div class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                  <a class=\"btn addbtn btn-inverse btn-sm\" (click)=\"AddDosageAndSize()\">Add</a>\r\n                </div>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                   <!--  <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div> -->\r\n                  </div>\r\n                </div>\r\n\r\n               <!--  <div class=\"col-md-6 pull-md-6\">\r\n                  <a class=\"mr-n-lg\" href=\"#\">Trouble with account?</a>\r\n                </div> -->\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n      </div>\r\n    </div>\r\n  </main>\r\n <!--  <footer class=\"page-footer\">\r\n    2016 &copy; Sing. Admin Dashboard Template.\r\n  </footer> -->\r\n</div>\r\n</div>\r\n</div>"
+module.exports = "<div id=\"snackbar1\"></div>\r\n<div class=\"row\">\r\n<div class=\"col-md-6\">\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xl-4 col-md-6 col-xs-12\">\r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          sing\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login AddDosage animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"font-size:36px;font-weight:900\">ADD Cateogry</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n              <div class=\"form-group\">\r\n                <input type=\"text\" class=\"form-control\" [(ngModel)]=\"categoryName\" name=\"categoryName\" id=\"exampleInputEmail1\" placeholder=\"Enter Name\">\r\n              </div>\r\n              \r\n              <div class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                  <a class=\"btn addbtn btn-inverse btn-sm\" (click)=\"addCategoryValues()\">Add</a>\r\n                </div>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                   <!--  <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div> -->\r\n                  </div>\r\n                </div>\r\n\r\n               <!--  <div class=\"col-md-6 pull-md-6\">\r\n                  <a class=\"mr-n-lg\" href=\"#\">Trouble with account?</a>\r\n                </div> -->\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n      </div>\r\n    </div>\r\n  </main>\r\n <!--  <footer class=\"page-footer\">\r\n    2016 &copy; Sing. Admin Dashboard Template.\r\n  </footer> -->\r\n</div>\r\n</div>\r\n\r\n<div id=\"snackbar1\"></div>\r\n<div class=\"col-md-6\">\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xl-4 col-md-6 col-xs-12\">\r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          sing\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login  AddSize animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"font-size:36px;font-weight:900\">ADD SUBCATEGORY</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n             <select id=\"measurementName\" (change)=\"getCategory($event.target.value)\"> \r\n                <option *ngFor=\"let category of catergories\" value=\"{{category.Id}}\">{{category.CategoryName}}</option>\r\n\t\t\t\t\t\t\t</select>\r\n              <div class=\"form-group\">\r\n                <input class=\"form-control\" id=\"pswd\" [(ngModel)]=\"subCategoryName\" name=\"subCategoryName\" type=\"text\" placeholder=\"Enter Value\">\r\n              </div>\r\n \r\n              <div class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                  <a class=\"btn addbtn btn-inverse btn-sm\" (click)=\"addSubcateogry()\">Add</a>\r\n                </div>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                   <!--  <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div> -->\r\n                  </div>\r\n                </div>\r\n\r\n               <!--  <div class=\"col-md-6 pull-md-6\">\r\n                  <a class=\"mr-n-lg\" href=\"#\">Trouble with account?</a>\r\n                </div> -->\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n      </div>\r\n    </div>\r\n  </main>\r\n <!--  <footer class=\"page-footer\">\r\n    2016 &copy; Sing. Admin Dashboard Template.\r\n  </footer> -->\r\n</div>\r\n</div>\r\n</div>"
 
 /***/ },
 
-/***/ "./src/app/services/MeasurementAndDosageSizesService.ts":
+/***/ "./src/app/services/AddCategoryService.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -120,33 +152,47 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var ServiceUrl_1 = __webpack_require__("./src/app/services/ServiceUrl.ts");
-var MeasurementAndDosageSizesService = (function () {
-    function MeasurementAndDosageSizesService(http) {
+var AddCategoryService = (function () {
+    function AddCategoryService(http) {
         this.http = http;
         this.urlService = new ServiceUrl_1.ServiceUrl();
     }
-    MeasurementAndDosageSizesService.prototype.AddMeasurementService = function (MeasurementName, MeasurementSymbol) {
-        var body = JSON.stringify({ measurementName: MeasurementName, measurementSymbol: MeasurementSymbol });
+    AddCategoryService.prototype.addCategory = function (chemistId, categoryName, ParentId) {
+        var body = JSON.stringify({ ChemistId: chemistId, CategoryName: categoryName, ParentId: ParentId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.urlService.baseUrl + "Chemist/addMeasurement", body, options)
+        return this.http.post(this.urlService.baseUrl + "Chemist/addCategory", body, options)
             .map(function (res) { return res.json(); });
     };
-    MeasurementAndDosageSizesService.prototype.AddDosageAndSizeService = function (DosageName, DosageSymbol) {
-        var body = JSON.stringify({ UnitName: DosageName, UnitSymbol: DosageSymbol });
+    AddCategoryService.prototype.getAllSubCategoryValues = function (ChemistId, CategoryId) {
+        var body = JSON.stringify({ ChemistId: ChemistId, ParentId: CategoryId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getAllCategoriesAndSubCategories", options)
+            .map(function (res) { return res.json(); });
+    };
+    AddCategoryService.prototype.getCateogry = function () {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getAllCategoriesAndSubCategories", options)
+            .map(function (res) { return res.json(); });
+    };
+    AddCategoryService.prototype.addSubcategory = function (chemistId, subCategoryName, parentId) {
+        var body = JSON.stringify({ ChemistId: chemistId, SubCategoryName: subCategoryName, ParentId: parentId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.urlService.baseUrl + "Chemist/addUnit", body, options)
+        return this.http.post(this.urlService.baseUrl + "Chemist/addSubCategory", body, options)
             .map(function (res) { return res.json(); });
     };
-    MeasurementAndDosageSizesService = __decorate([
+    AddCategoryService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], MeasurementAndDosageSizesService);
-    return MeasurementAndDosageSizesService;
+    ], AddCategoryService);
+    return AddCategoryService;
     var _a;
 }());
-exports.MeasurementAndDosageSizesService = MeasurementAndDosageSizesService;
+exports.AddCategoryService = AddCategoryService;
 
 
 /***/ },

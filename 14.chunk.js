@@ -9,13 +9,15 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
 var AddMedicineService_1 = __webpack_require__("./src/app/services/AddMedicineService.ts");
 var AdddosageService_1 = __webpack_require__("./src/app/services/AdddosageService.ts");
+var MedicineModel_1 = __webpack_require__("./src/app/models/MedicineModel.ts");
+var PricePerQuantityModel_1 = __webpack_require__("./src/app/models/PricePerQuantityModel.ts");
 var MedicineComponent = (function () {
     function MedicineComponent(_addMedicineService, router, _addDosageService) {
         var _this = this;
         this._addMedicineService = _addMedicineService;
         this._addDosageService = _addDosageService;
-        this.MedicineModel = [];
-        this.PricePerQuantityModel = [];
+        this.MedicineModelSingle = [];
+        this.PricePerQuantityModelSingle = [];
         this.SelectedMeasurementModel = [];
         this.router = router;
         this.ChemistId = 1;
@@ -41,40 +43,37 @@ var MedicineComponent = (function () {
             console.log(response);
             _this.DosageSizesAndValueModel = [];
             for (var i = 0; i < response.data.length; i++) {
-                /*  if (this.CategoryId == response.data[i].Id) { */
                 _this.DosageSizesAndValueModel.push(response.data[i]);
             }
             console.log(_this.DosageSizesAndValueModel);
         });
     };
     MedicineComponent.prototype.populatePricePerQuantity = function () {
-        this.SinglePricePerQuantityModel = new Object();
+        this.SinglePricePerQuantityModel = new PricePerQuantityModel_1.PricePerQuantityModel();
         this.SinglePricePerQuantityModel.Price = this.ProductPrice;
         this.SinglePricePerQuantityModel.Quantity = this.ProductQuantity;
         this.SinglePricePerQuantityModel.MeasurementId = this.MeasurementName;
         this.SinglePricePerQuantityModel.DosageAndSizesValuesId = this.DosageSizesValuesId;
-        this.PricePerQuantityModel.push(this.SinglePricePerQuantityModel);
+        this.PricePerQuantityModelSingle.push(this.SinglePricePerQuantityModel);
         console.log(this.SinglePricePerQuantityModel);
     };
     MedicineComponent.prototype.getDosageSizesAndValuesId = function (DosageSizesValuesId) {
         this.DosageSizesValuesId = DosageSizesValuesId;
     };
     MedicineComponent.prototype.addMedicine = function () {
-        this.SingleMedicineModel = new Object();
+        this.SingleMedicineModel = new MedicineModel_1.MedicineModel();
         this.ChemistId = 1;
         this.SingleMedicineModel.ChemistId = this.ChemistId;
         this.SingleMedicineModel.Quantity = this.ProductQuantity;
         this.SingleMedicineModel.Price = this.ProductPrice;
         this.SingleMedicineModel.DosageSizeAndValues = this.DosageId;
-        this.SingleMedicineModel.CategoryId = this.CategoryId;
         this.SingleMedicineModel.SubCategoryId = this.SubCategoryId;
         this.SingleMedicineModel.MedicineName = this.MedicineName;
         this.SingleMedicineModel.MeasurementModel = this.SelectedMeasurementModel;
-        this.MedicineModel.push(this.SingleMedicineModel);
-        this._addMedicineService.AddMedicineAndDosageService(this.SingleMedicineModel, this.PricePerQuantityModel).subscribe(function (response) {
+        this.MedicineModelSingle.push(this.SingleMedicineModel);
+        this._addMedicineService.AddMedicineAndDosageService(this.SingleMedicineModel, this.PricePerQuantityModelSingle).subscribe(function (response) {
             console.log(response);
         });
-        console.log(this.MedicineModel);
         //this._addMedicineService.AddMedicineAndDosageService(this.ChemistId,this.MedicineName,this.MeasurementName,this.SubCategoryId,this.PricePerQuantityModel.DosageValue,this.PricePerQuantityModel.Quantity,this.PricePerQuantityModel.Price)
     };
     MedicineComponent.prototype.getMedicineCategoryId = function (CategoryId) {
@@ -179,6 +178,36 @@ module.exports = "<div id=\"snackbar1\"></div>\r\n<div class=\"row\">\r\n<div cl
 
 /***/ },
 
+/***/ "./src/app/models/MedicineModel.ts":
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+var MedicineModel = (function () {
+    function MedicineModel() {
+    }
+    return MedicineModel;
+}());
+exports.MedicineModel = MedicineModel;
+
+
+/***/ },
+
+/***/ "./src/app/models/PricePerQuantityModel.ts":
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+var PricePerQuantityModel = (function () {
+    function PricePerQuantityModel() {
+    }
+    return PricePerQuantityModel;
+}());
+exports.PricePerQuantityModel = PricePerQuantityModel;
+
+
+/***/ },
+
 /***/ "./src/app/services/AddMedicineService.ts":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -229,8 +258,7 @@ var AddMedicineService = (function () {
             .map(function (res) { return res.json(); });
     };
     AddMedicineService.prototype.AddMedicineAndDosageService = function (SingleMedicineModel, PricePerQuantityModel) {
-        //        
-        var body = JSON.stringify({ ChemistId: SingleMedicineModel.ChemistId, DosageSizeAndValues: SingleMedicineModel.DosageSizeAndValues, Name: SingleMedicineModel.Name, MeasurementIds: SingleMedicineModel.MeasurementModel, SubCategoryId: SingleMedicineModel.SubCategoryId, AddProductDaosageAndSizeMappingDTO: PricePerQuantityModel });
+        var body = JSON.stringify({ ChemistId: SingleMedicineModel.ChemistId, DosageSizeAndValues: SingleMedicineModel.DosageSizeAndValues, Name: SingleMedicineModel.MedicineName, MeasurementIds: SingleMedicineModel.MeasurementModel, SubCategoryId: SingleMedicineModel.SubCategoryId, AddProductDaosageAndSizeMappingDTO: PricePerQuantityModel });
         console.log(body);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });

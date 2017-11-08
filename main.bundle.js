@@ -275,6 +275,7 @@ var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-b
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
+/* import { AgmCoreModule } from '@agm/core'; */
 var hmr_1 = __webpack_require__("./node_modules/@angularclass/hmr/dist/index.js");
 /*
  * Platform and Environment providers/directives/pipes
@@ -343,7 +344,10 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
-                router_1.RouterModule.forRoot(app_routes_1.ROUTES, { useHash: true })
+                router_1.RouterModule.forRoot(app_routes_1.ROUTES, { useHash: true }) /* ,
+                AgmCoreModule.forRoot({
+                  apiKey: 'AIzaSyB1EU_8RqF4v6VUggkQy_Vbvy7PSlRkohc'
+                }) */
             ],
             providers: [
                 environment_1.ENV_PROVIDERS,
@@ -396,7 +400,7 @@ exports.APP_RESOLVER_PROVIDERS = [
 "use strict";
 var error_component_1 = __webpack_require__("./src/app/error/error.component.ts");
 exports.ROUTES = [{
-        path: '', redirectTo: 'app', pathMatch: 'full'
+        path: '', redirectTo: 'login', pathMatch: 'full'
     }, {
         path: 'app', loadChildren: function () { return __webpack_require__.e/* System.import */(0).then(__webpack_require__.bind(null, "./src/app/layout/layout.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); }
     }, {
