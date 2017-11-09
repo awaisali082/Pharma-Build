@@ -15468,7 +15468,7 @@ __webpack_require__("./node_modules/jquery.animate-number/jquery.animateNumber.j
 __webpack_require__("./node_modules/jQuery-Mapael/js/jquery.mapael.js");
 __webpack_require__("./node_modules/jQuery-Mapael/js/maps/usa_states.js");
 __webpack_require__("./node_modules/bootstrap_calendar/bootstrap_calendar/js/bootstrap_calendar.js");
-var dashboard_component_ts_1 = __webpack_require__("./src/app/dashboard/dashboard.component.ts");
+var dashboard_component_1 = __webpack_require__("./src/app/dashboard/dashboard.component.ts");
 var widget_module_1 = __webpack_require__("./src/app/layout/widget/widget.module.ts");
 var utils_module_1 = __webpack_require__("./src/app/layout/utils/utils.module.ts");
 var rickshaw_module_1 = __webpack_require__("./src/app/components/rickshaw/rickshaw.module.ts");
@@ -15476,7 +15476,7 @@ var geo_locations_widget_directive_1 = __webpack_require__("./src/app/dashboard/
 var market_stats_widget_component_1 = __webpack_require__("./src/app/dashboard/market-stats-widget/market-stats-widget.component.ts");
 var bootstrap_calendar_component_1 = __webpack_require__("./src/app/dashboard/bootstrap-calendar/bootstrap-calendar.component.ts");
 exports.routes = [
-    { path: '', component: dashboard_component_ts_1.Dashboard, pathMatch: 'full' }
+    { path: '', component: dashboard_component_1.Dashboard, pathMatch: 'full' }
 ];
 var DashboardModule = (function () {
     function DashboardModule() {
@@ -15492,7 +15492,7 @@ var DashboardModule = (function () {
                 rickshaw_module_1.RickshawChartModule
             ],
             declarations: [
-                dashboard_component_ts_1.Dashboard,
+                dashboard_component_1.Dashboard,
                 geo_locations_widget_directive_1.GeoLocationsWidget,
                 bootstrap_calendar_component_1.BootstrapCalendar,
                 market_stats_widget_component_1.MarketStatsWidget

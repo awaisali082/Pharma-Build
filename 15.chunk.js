@@ -368,10 +368,11 @@ webpackJsonpac__name_([15],{
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
+"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
 var AddCategoryService_1 = __webpack_require__("./src/app/services/AddCategoryService.ts");
+var jQuery = __webpack_require__("./node_modules/jquery/dist/jquery.js");
 var AddChemistComponent = (function () {
     function AddChemistComponent(_addCategoryService, router) {
         var _this = this;
@@ -403,7 +404,6 @@ var AddChemistComponent = (function () {
 }());
 exports.AddChemistComponent = AddChemistComponent;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
 
 /***/ },
 
