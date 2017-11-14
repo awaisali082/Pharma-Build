@@ -14,25 +14,43 @@ var AddChemistComponent = (function () {
         this._addChemistServiceService = _addChemistServiceService;
         this.router = router;
     }
+    /* ngOnInit(): void {
+      jQuery('#somecomponent').locationpicker({
+        location: {
+            latitude: 46.15242437752303,
+            longitude: 2.7470703125
+        },
+        radius: 300,
+        inputBinding: {
+            latitudeInput: jQuery('#us7-lat'),
+            longitudeInput: jQuery('#us7-lon'),
+            radiusInput: jQuery('#us7-radius'),
+            locationNameInput: jQuery('#us7-address')
+        },
+        enableAutocomplete: true,
+        autocompleteOptions: {
+            types: ['(cities)'],
+            componentRestrictions: {country: 'fr'}
+        }
+    });
+    } */
     AddChemistComponent.prototype.ngOnInit = function () {
-        jQuery('#somecomponent').locationpicker({
-            location: {
-                latitude: 46.15242437752303,
-                longitude: 2.7470703125
-            },
-            radius: 300,
-            inputBinding: {
-                latitudeInput: jQuery('#us7-lat'),
-                longitudeInput: jQuery('#us7-lon'),
-                radiusInput: jQuery('#us7-radius'),
-                locationNameInput: jQuery('#us7-address')
-            },
-            enableAutocomplete: true,
-            autocompleteOptions: {
-                types: ['(cities)'],
-                componentRestrictions: { country: 'fr' }
-            }
-        });
+        setTimeout(function () {
+            jQuery('#somecomponent').locationpicker({
+                location: {
+                    latitude: 46.15242437752303,
+                    longitude: 2.7470703125
+                },
+                radius: 300,
+                inputBinding: {
+                    latitudeInput: jQuery('#us2-lat'),
+                    longitudeInput: jQuery('#us2-lon'),
+                    radiusInput: jQuery('#us2-radius'),
+                    locationNameInput: jQuery('#us2-address')
+                },
+                enableAutocomplete: true
+            });
+        }, 3000);
     };
     AddChemistComponent.prototype.addChemist = function () {
         var _this = this;
