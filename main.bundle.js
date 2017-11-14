@@ -275,7 +275,6 @@ var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-b
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-/* import { AgmCoreModule } from '@agm/core'; */
 var hmr_1 = __webpack_require__("./node_modules/@angularclass/hmr/dist/index.js");
 /*
  * Platform and Environment providers/directives/pipes

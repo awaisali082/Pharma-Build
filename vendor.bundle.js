@@ -24751,7 +24751,7 @@ var ViewCompiler = (function () {
  * Entry point for all public APIs of the core package.
  */
 
-//# sourceMappingURL=index.js.map
+//sourceMappingURL=index.js.map
 
 /***/ },
 
