@@ -293,6 +293,26 @@ var GetChemistDataService = (function () {
             return res.json();
         });
     };
+    GetChemistDataService.prototype.getSubCategoryService = function () {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getSubCategoriesByChemistIdByCategoryId?chemistId=1&categoryId=1", options)
+            .map(function (res) {
+            console.log(res.json());
+            return res.json();
+        });
+    };
+    GetChemistDataService.prototype.getDataByAreaIdService = function (AreadId) {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getChemistsListByArea?areaId" + AreadId, options)
+            .map(function (res) {
+            console.log(res.json());
+            return res.json();
+        });
+    };
     GetChemistDataService.prototype.GetChemistService = function () {
         var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });

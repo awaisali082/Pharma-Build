@@ -37,12 +37,13 @@ var DeleteCategoryComponent = (function () {
     DeleteCategoryComponent.prototype.getCategory = function (PharmacistId) {
         var _this = this;
         console.log(PharmacistId);
+        this.Pharmacist_Id = PharmacistId;
         this.AddCategoryServiceArray = [];
         this._getChemistDataService.getCateogry(PharmacistId).subscribe(function (response) {
             console.log(response.data);
             for (var i = 0; i < response.data.length; i++) {
                 if (response.data[i].ChemistId == PharmacistId)
-                    _this.AddCategoryServiceArray.push(response.data[i]);
+                    _this.AddCategoryServiceArray = response.data;
                 console.log(_this.AddCategoryServiceArray);
             }
             _this.getSubCateogry();
@@ -52,7 +53,7 @@ var DeleteCategoryComponent = (function () {
         var _this = this;
         this._getChemistDataService.GetSubCateogry().subscribe(function (response) {
             for (var i = 0; i < response.data.length; i++) {
-                if (response.data[i].ParentId != 0)
+                if ((response.data[i].ParentId == _this.Category_Id && response.data[i].ChemistId == _this.Pharmacist_Id))
                     _this.GetSubCategoryModelArray.push(response.data[i]);
             }
             console.log('Sub Category :', _this.GetSubCategoryModelArray);
@@ -60,19 +61,22 @@ var DeleteCategoryComponent = (function () {
             _this.myFunction();
         });
     };
-    DeleteCategoryComponent.prototype.getCategoryId = function (CategoryId, SubCategoryId) {
+    DeleteCategoryComponent.prototype.getCategoryId = function (CategoryId) {
         var _this = this;
         console.log(CategoryId);
-        this._deleteCategoryService.DeleteCategoryIdService(CategoryId).subscribe(function (response) {
+        this.Category_Id = CategoryId;
+        this._deleteCategoryService.DeleteCategoryIdService(this.Category_Id).subscribe(function (response) {
             console.log(response);
             jQuery("#snackbar1").html("Delete Category Successfully");
             _this.myFunction();
         });
-        this._deleteCategoryService.DeleteSubCategoryIdService(SubCategoryId).subscribe(function (response) {
+        /* this._deleteCategoryService.DeleteSubCategoryIdService(SubCategoryId).subscribe(
+          response => {
             console.log(response);
             jQuery("#snackbar1").html("Delete Category Successfully");
-            _this.myFunction();
-        });
+            this.myFunction();
+    
+          }); */
     };
     DeleteCategoryComponent.prototype.myFunction = function () {
         // Get the snackbar DIV
@@ -153,7 +157,7 @@ module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .pag
 /***/ "./src/app/DeleteCategory/DeleteCategory.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div id=\"snackbar1\"></div>\r\n\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n  \r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          Pharma\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login AddMedicine animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"font-size:36px;font-weight:900\">Delete Categories </h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n             <!--    <div class=\"form-group\" id=\"SelectChemistCategory\">\r\n                    \r\n                                    <label style=\"font-size: 12px;\">Select Chemist  Category</label>\r\n                    \r\n                                    <select id=\"MedicineCategory\"(change)=\"getChemistCategoryId($event.target.value)\">\r\n                                        <option disabled selected value> -- select an option -- </option>\r\n                                    \r\n                                    <option *ngFor=\"let ChemistProductCategory of GetCategoryByChemistIdModel\" value=\"{{ChemistProductCategory.Id}}\">{{ChemistProductCategory.CategoryName}}</option>\r\n                                    </select>   \r\n                                   \r\n                                  </div> -->\r\n              \r\n                <div class=\"form-group\" id=\"SelectProductCategory\">\r\n                    \r\n                                    <label style=\"font-size: 12px;\">Select Pharmacy Name</label>\r\n                    \r\n                                    <select id=\"MedicineCategory\"(change)=\"getCategory($event.target.value)\">\r\n                                        <option disabled selected value> -- select an option -- </option>\r\n                                    \r\n                                    <option *ngFor=\"let pharmacyName of GetChemistDataModelArray\" value=\"{{pharmacyName.ChemistId}}\">{{pharmacyName.Chemist.PharmacyName}}</option>\r\n                                    </select>   \r\n                                   \r\n                                  </div>\r\n                                \r\n            \r\n              \r\n               \r\n             \r\n               \r\n              <table class=\"table table-hover\">\r\n                  \r\n                      <tr>\r\n                          <td>Category Name</td>\r\n                          <td>SubCategory</td>\r\n                          \r\n                      </tr>\r\n                    <!--   let row1 of AllChemistDataModel; -->\r\n                     \r\n                    <ng-container  *ngFor=\" let row of AddCategoryServiceArray\">\r\n                      \r\n         \r\n                        \r\n                        <tr (click)=getCategoryId(row.Id,row1.Id) *ngFor=\"let row1 of GetSubCategoryModelArray\">\r\n                            <td>{{row.CategoryName}}</td>     \r\n                            <td>{{row1.CategoryName}}</td>   \r\n                            \r\n\r\n                        </tr>\r\n                        \r\n                   <!--      <td>{{row1.Chemist.Address}}</td> -->\r\n                     <!--    <td>{{row1.Chemist.Latitude}}</td> -->\r\n                       \r\n                       \r\n\r\n                    </ng-container>\r\n                  \r\n                     \r\n                  \r\n                  \r\n              </table> \r\n              <div class=\"clearfix\">\r\n                  <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                    <a class=\"btn addbtn btn-inverse btn-sm\" (click)=\"GetChemistData()\">Add</a>\r\n                  </div>\r\n                </div>\r\n\r\n\r\n\r\n\r\n              \r\n               </form>\r\n              </div>\r\n             </section>\r\n     \r\n        </div>\r\n  </main>\r\n      </div>\r\n    \r\n  \r\n  \r\n\r\n"
+module.exports = "<div id=\"snackbar1\"></div>\r\n\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n  \r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          Pharma\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login AddMedicine animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"font-size:36px;font-weight:900\">Delete Categories </h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n             <!--    <div class=\"form-group\" id=\"SelectChemistCategory\">\r\n                    \r\n                                    <label style=\"font-size: 12px;\">Select Chemist  Category</label>\r\n                    \r\n                                    <select id=\"MedicineCategory\"(change)=\"getChemistCategoryId($event.target.value)\">\r\n                                        <option disabled selected value> -- select an option -- </option>\r\n                                    \r\n                                    <option *ngFor=\"let ChemistProductCategory of GetCategoryByChemistIdModel\" value=\"{{ChemistProductCategory.Id}}\">{{ChemistProductCategory.CategoryName}}</option>\r\n                                    </select>   \r\n                                   \r\n                                  </div> -->\r\n              \r\n                <div class=\"form-group\" id=\"SelectProductCategory\">\r\n                    \r\n                                    <label style=\"font-size: 12px;\">Select Pharmacy Name</label>\r\n                    \r\n                                    <select id=\"MedicineCategory\"(change)=\"getCategory($event.target.value)\">\r\n                                        <option disabled selected value> -- select an option -- </option>\r\n                                    \r\n                                    <option *ngFor=\"let pharmacyName of GetChemistDataModelArray\" value=\"{{pharmacyName.ChemistId}}\">{{pharmacyName.Chemist.PharmacyName}}</option>\r\n                                    </select>   \r\n                                   \r\n                                  </div>\r\n                                \r\n            \r\n              \r\n               \r\n             \r\n               \r\n              <table class=\"table table-hover\">\r\n                  \r\n                      <tr>\r\n                          <td>Category Name</td>\r\n                         \r\n                         \r\n                          \r\n                      </tr>\r\n                    <!--   let row1 of AllChemistDataModel; -->\r\n                     \r\n                    <ng-container  *ngFor=\" let row of AddCategoryServiceArray\">\r\n                      \r\n         \r\n                      <p (click)=getCategoryId(row.Id)>{{row.CategoryName}} </p>\r\n                        <tr  *ngFor=\"let row1 of GetSubCategoryModelArray\">\r\n                    <td>{{row1.CategoryName}}</td> \r\n                          \r\n                        </tr>\r\n                        \r\n                   <!--      <td>{{row1.Chemist.Address}}</td> -->\r\n                     <!--    <td>{{row1.Chemist.Latitude}}</td> -->\r\n                       \r\n                       \r\n\r\n                    </ng-container>\r\n                  \r\n                     \r\n                  \r\n                  \r\n              </table> \r\n              <div class=\"clearfix\">\r\n                  <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                    <a class=\"btn addbtn btn-inverse btn-sm\" (click)=\"GetChemistData()\">Add</a>\r\n                  </div>\r\n                </div>\r\n\r\n\r\n\r\n\r\n              \r\n               </form>\r\n              </div>\r\n             </section>\r\n     \r\n        </div>\r\n  </main>\r\n      </div>\r\n    \r\n  \r\n  \r\n\r\n"
 
 /***/ },
 
