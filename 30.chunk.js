@@ -29,11 +29,10 @@ var GetChemistComponent = (function () {
         this.ChemistId = obj;
         this._getChemistDataService.GetRegisteredChemistService().subscribe(function (response) {
             console.log(response.data);
-            for (var i = 0; i < response.data.length; i++)
-                if (response.data[i].Chemist.CityId == _this.getCityId) {
-                    _this.AllChemistDataModel = [];
-                    _this.AllChemistDataModel.push(response.data[i]);
-                }
+            if (response.data.Chemist.CityId == _this.getCityId) {
+                _this.AllChemistDataModel = [];
+                _this.AllChemistDataModel.push(response.data);
+            }
         });
         console.log(this.AllChemistDataModel);
     };

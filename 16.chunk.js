@@ -26,11 +26,10 @@ var GetProductComponent = (function () {
         this.ProductType = 100;
         this._getChemistDataService.GetChemistService().subscribe(function (response) {
             for (var i = 0; i < response.data.length; i++) {
-                console.log(response.data[i]);
                 _this.GetChemistDataModelArray.push(response.data[i]);
-                jQuery("#snackbar1").html("Show Pharmacacy Name  Successfully");
-                _this.myFunction();
             }
+            jQuery("#snackbar1").html("Show Pharmacacy Name  Successfully");
+            _this.myFunction();
             console.log('Chemist array', _this.GetChemistDataModelArray);
         });
     }

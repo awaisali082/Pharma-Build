@@ -36,26 +36,23 @@ var GetChemistByAreaComponent = (function () {
         this._getChemistDataService.GetAllCitiesService().subscribe(function (response) {
             _this.GetAllCitiesModelArray = response.data;
             console.log(_this.GetAllCitiesModelArray);
-            _this.getAllAreaName();
             jQuery("#snackbar1").html(response.message);
             _this.myFunction();
-            _this.getAllAreaName();
         });
     };
     GetChemistByAreaComponent.prototype.getAreaId = function (AreaId) {
         var _this = this;
         this.getArea_Id = AreaId;
+        console.log(AreaId);
         this._getChemistDataService.GetRegisteredChemistService().subscribe(function (response) {
             console.log(response.data);
             for (var i = 0; i < response.data.length; i++)
-                if (response.data[i].Chemist.CityId == _this.CityId) {
+                if (response.data[i].Chemist.AreaId == _this.getArea_Id) {
                     _this.AllChemistDataModel = [];
                     _this.AllChemistDataModel.push(response.data[i]);
                 }
+            console.log("After ", _this.AllChemistDataModel);
         });
-        console.log(this.AllChemistDataModel);
-    };
-    GetChemistByAreaComponent.prototype.getAllAreaName = function () {
     };
     GetChemistByAreaComponent.prototype.getCityName = function (cityId) {
         var _this = this;
@@ -68,20 +65,6 @@ var GetChemistByAreaComponent = (function () {
             jQuery("#snackbar1").html(response.message);
             _this.myFunction();
         });
-    };
-    GetChemistByAreaComponent.prototype.getPharmacyId = function (PharmacyID) {
-        var _this = this;
-        this.PharmacyId = PharmacyID;
-        console.log(this.PharmacyId);
-        var obj = this.SingleChemistDataModel.find(function (x) { return x.ChemistId == _this.PharmacyId; });
-        this.GetChemistId = obj.Chemist.Id;
-        localStorage.setItem("GetChemistId", obj.ChemistId.toString());
-        this.GetChemistId = localStorage.getItem("GetChemistId");
-        this.Address = obj.Chemist.Address;
-        this.FullName = obj.FullName;
-        console.log(obj);
-        console.log(this.Address);
-        console.log(this.FullName);
     };
     GetChemistByAreaComponent.prototype.ngOnInit = function () {
         setTimeout(function () {
