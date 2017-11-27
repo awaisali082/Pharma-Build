@@ -23,19 +23,16 @@ var UpdateOrderStatusComponent = (function () {
         this.GetLaugisticModelArray = [];
         this.GetLaugisticModeldata = [];
         this.PendingOrderServiceArray = [];
-        var OrderNumber;
-        (function (OrderNumber) {
-            OrderNumber[OrderNumber["PENDING"] = "pending"] = "PENDING";
-            OrderNumber[OrderNumber["ONTHEWAY"] = "On The way"] = "ONTHEWAY";
-            OrderNumber[OrderNumber["DELIVERED"] = "Delivered"] = "DELIVERED";
-            OrderNumber[OrderNumber["CONFIRMED"] = "Confirmed"] = "CONFIRMED";
-            OrderNumber[OrderNumber["SHIPPED"] = "Shipped"] = "SHIPPED";
-            OrderNumber[OrderNumber["NOTSHIPPED"] = "Not Shipped"] = "NOTSHIPPED";
-            OrderNumber[OrderNumber["CANCELED"] = "Canceled"] = "CANCELED";
-            OrderNumber[OrderNumber["COMPLETED"] = "Completed"] = "COMPLETED";
-            OrderNumber[OrderNumber["RETURNED"] = "Returned"] = "RETURNED";
-            OrderNumber[OrderNumber["TOBEDELIVERED"] = "To Be Delivered"] = "TOBEDELIVERED";
-        })(OrderNumber || (OrderNumber = {}));
+        this.PENDING = "pending";
+        this.ONTHEWAY = "On The way";
+        this.DELIVERED = "Delivered";
+        this.CONFIRMED = "Confirmed";
+        this.SHIPPED = "Shipped";
+        this.NOTSHIPPED = "Not Shipped";
+        this.CANCELED = "Canceled";
+        this.COMPLETED = "Completed";
+        this.RETURNED = "Returned";
+        this.TOBEDELIVERED = "To Be Delivered";
         this.router = router;
         this.username = undefined;
         this.password = undefined;
@@ -46,34 +43,34 @@ var UpdateOrderStatusComponent = (function () {
             _this.myFunction();
             for (var i = 0; i < response.data.length; i++) {
                 if (_this.GetAllProductModelArray[i].OrderStatus == 100) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.PENDING;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.PENDING;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 200) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.ONTHEWAY;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.ONTHEWAY;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 300) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.DELIVERED;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.DELIVERED;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 400) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.CONFIRMED;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.CONFIRMED;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 500) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.SHIPPED;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.SHIPPED;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 600) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.NOTSHIPPED;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.NOTSHIPPED;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 700) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.CANCELED;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.CANCELED;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 800) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.COMPLETED;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.COMPLETED;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 900) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.RETURNED;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.RETURNED;
                 }
                 else if (_this.GetAllProductModelArray[i].OrderStatus == 10) {
-                    _this.GetAllProductModelArray[i].OrderStatus = OrderNumber.TOBEDELIVERED;
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.TOBEDELIVERED;
                 }
                 else {
                     alert("Not Available");
@@ -111,6 +108,41 @@ var UpdateOrderStatusComponent = (function () {
             var OrderIdchanged = response.data.Id;
             var obj = _this.GetAllProductModelArray.find(function (x) { return x.Id == OrderIdchanged; });
             obj.OrderStatus = response.data.OrderStatus;
+            for (var i = 0; i < response.data.length; i++) {
+                if (obj.OrderStatus[i] == 100) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.PENDING;
+                }
+                else if (obj.OrderStatus[i] == 200) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.ONTHEWAY;
+                }
+                else if (obj.OrderStatus[i] == 300) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.DELIVERED;
+                }
+                else if (obj.OrderStatus[i] == 400) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.CONFIRMED;
+                }
+                else if (obj.OrderStatus[i] == 500) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.SHIPPED;
+                }
+                else if (obj.OrderStatus[i] == 600) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.NOTSHIPPED;
+                }
+                else if (obj.OrderStatus[i] == 700) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.CANCELED;
+                }
+                else if (obj.OrderStatus[i] == 800) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.COMPLETED;
+                }
+                else if (obj.OrderStatus[i] == 900) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.RETURNED;
+                }
+                else if (obj.OrderStatus[i] == 10) {
+                    _this.GetAllProductModelArray[i].OrderStatus = _this.TOBEDELIVERED;
+                }
+                else {
+                    alert("Not Available");
+                }
+            }
         });
     };
     UpdateOrderStatusComponent.prototype.GetLaugisticId = function (LougisticId) {

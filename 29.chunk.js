@@ -1,77 +1,111 @@
 webpackJsonpac__name_([29],{
 
-/***/ "./src/app/GetChemist/GetChemist.component.ts":
+/***/ "./src/app/GetOrder/GetOrder.component.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
+"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var GetChemistDataService_1 = __webpack_require__("./src/app/services/GetChemistDataService.ts");
-var GetChemistComponent = (function () {
-    function GetChemistComponent(_getChemistDataService, router) {
+var GetOrderService_1 = __webpack_require__("./src/app/services/GetOrderService.ts");
+var GetOrderComponent = (function () {
+    function GetOrderComponent(_addMedicineService, router) {
         var _this = this;
-        this._getChemistDataService = _getChemistDataService;
-        this.AllChemistDataModelCity = [];
-        this.AllChemistDataModel = [];
-        this.SingleChemistModel = [];
+        this._addMedicineService = _addMedicineService;
+        this.GetAllProductModelArray = [];
+        this.GetOrderDetailModelArray = [];
+        this.GetOrderDetailModelOrderStatus = [];
+        this.GetAllProductModelArraySingle = [];
+        this.GetAllProductDosageValue = [];
+        this.GetChemistDataModelArray = [];
         this.router = router;
-        this._getChemistDataService.GetAllCitiesService().subscribe(function (response) {
-            _this.AllChemistDataModelCity = response.data;
-        });
-        console.log('City Name', this.AllChemistDataModelCity);
-    }
-    GetChemistComponent.prototype.getCityName = function (CityId) {
-        var _this = this;
-        this.getCityId = CityId;
-        console.log(this.getCityId);
-        var obj = this.AllChemistDataModel.find(function (x) { return x.Chemist.CityId == _this.getCityId; });
-        this.ChemistId = obj;
-        this._getChemistDataService.GetRegisteredChemistService().subscribe(function (response) {
+        this.ProductType = 100;
+        this.ChemistId = localStorage.getItem("GetChemistId");
+        this.PENDING = "pending";
+        this.ONTHEWAY = "On The way";
+        this.DELIVERED = "Delivered";
+        this.CONFIRMED = "Confirmed";
+        this.SHIPPED = "Shipped";
+        this.NOTSHIPPED = "Not Shipped";
+        this.CANCELED = "Canceled";
+        this.COMPLETED = "Completed";
+        this.RETURNED = "Returned";
+        this.TOBEDELIVERED = "To Be Delivered";
+        this._addMedicineService.GetOrderDetailService().subscribe(function (response) {
             console.log(response.data);
-            for (var i = 0; i < response.data.length; i++)
-                if (response.data[i].Chemist.CityId == _this.getCityId) {
-                    _this.AllChemistDataModel = [];
-                    _this.AllChemistDataModel.push(response.data[i]);
+            _this.GetOrderDetailModelArray = response.data;
+            console.log('Order Status', _this.GetOrderDetailModelArray);
+            for (var i = 0; i < response.data.length; i++) {
+                if (_this.GetOrderDetailModelArray[i].OrderStatus == 100) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.PENDING;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 200) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.ONTHEWAY;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 300) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.DELIVERED;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 400) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.CONFIRMED;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 500) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.SHIPPED;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 600) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.NOTSHIPPED;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 700) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.CANCELED;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 800) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.COMPLETED;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 900) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.RETURNED;
+                }
+                else if (_this.GetOrderDetailModelArray[i].OrderStatus == 10) {
+                    _this.GetOrderDetailModelArray[i].OrderStatus = _this.TOBEDELIVERED;
                 }
                 else {
-                    jQuery("#snackbar").html("Data Not Avaialable");
-                    _this.myFunction();
+                    alert("Not Available");
                 }
+            }
         });
-        console.log(this.AllChemistDataModel);
+    }
+    GetOrderComponent.prototype.getProductName = function () {
     };
-    GetChemistComponent.prototype.myFunction = function () {
+    GetOrderComponent.prototype.getSubCategoryName = function () {
+    };
+    GetOrderComponent.prototype.myFunction = function () {
         // Get the snackbar DIV
-        var x = document.getElementById("snackbar");
+        var x = document.getElementById("snackbar1");
         // Add the "show" class to DIV
         x.className = "show";
         // After 3 seconds, remove the show class from DIV
         setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
     };
-    GetChemistComponent = __decorate([
+    GetOrderComponent = __decorate([
         core_1.Component({
-            selector: 'GetChemist',
-            providers: [GetChemistDataService_1.GetChemistDataService],
-            styles: [__webpack_require__("./src/app/GetChemist/GetChemist.style.scss")],
-            template: __webpack_require__("./src/app/GetChemist/GetChemist.template.html"),
+            selector: 'GetOrder',
+            providers: [GetOrderService_1.GetOrderService],
+            styles: [__webpack_require__("./src/app/GetOrder/GetOrder.style.scss")],
+            template: __webpack_require__("./src/app/GetOrder/GetOrder.template.html"),
             encapsulation: core_1.ViewEncapsulation.None,
             host: {
-                class: 'chemist-page app'
+                class: 'dosage-page app'
             },
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof GetChemistDataService_1.GetChemistDataService !== 'undefined' && GetChemistDataService_1.GetChemistDataService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
-    ], GetChemistComponent);
-    return GetChemistComponent;
+        __metadata('design:paramtypes', [(typeof (_a = typeof GetOrderService_1.GetOrderService !== 'undefined' && GetOrderService_1.GetOrderService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+    ], GetOrderComponent);
+    return GetOrderComponent;
     var _a, _b;
 }());
-exports.GetChemistComponent = GetChemistComponent;
+exports.GetOrderComponent = GetOrderComponent;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
 
 /***/ },
 
-/***/ "./src/app/GetChemist/GetChemist.module.ts":
+/***/ "./src/app/GetOrder/GetOrder.module.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -80,19 +114,18 @@ var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var GetChemist_component_1 = __webpack_require__("./src/app/GetChemist/GetChemist.component.ts");
-__webpack_require__("./node_modules/jquery-locationpicker/src/locationpicker.jquery.js");
+var GetOrder_component_1 = __webpack_require__("./src/app/GetOrder/GetOrder.component.ts");
 exports.routes = [
-    { path: '', component: GetChemist_component_1.GetChemistComponent, pathMatch: 'full' }
+    { path: '', component: GetOrder_component_1.GetOrderComponent, pathMatch: 'full' }
 ];
-var GetChemistModule = (function () {
-    function GetChemistModule() {
+var GetOrderModule = (function () {
+    function GetOrderModule() {
     }
-    GetChemistModule.routes = exports.routes;
-    GetChemistModule = __decorate([
+    GetOrderModule.routes = exports.routes;
+    GetOrderModule = __decorate([
         core_1.NgModule({
             declarations: [
-                GetChemist_component_1.GetChemistComponent
+                GetOrder_component_1.GetOrderComponent
             ],
             imports: [
                 common_1.CommonModule,
@@ -101,30 +134,30 @@ var GetChemistModule = (function () {
             ]
         }), 
         __metadata('design:paramtypes', [])
-    ], GetChemistModule);
-    return GetChemistModule;
+    ], GetOrderModule);
+    return GetOrderModule;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = GetChemistModule;
+exports.default = GetOrderModule;
 
 
 /***/ },
 
-/***/ "./src/app/GetChemist/GetChemist.style.scss":
+/***/ "./src/app/GetOrder/GetOrder.style.scss":
 /***/ function(module, exports) {
 
-module.exports = ".login-page {\n  background-color: #ddd; }\n\n.hide {\n  visibility: hidden; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n#us7-lat {\n  width: 237px; }\n\n#us7-lon {\n  width: 237px; }\n\n#us7-radius {\n  width: 260px; }\n\n#us7-address {\n  width: 260px; }\n\n#measurementName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n#CityName {\n  width: 100%;\n  height: 30px;\n  background-color: #eceeef;\n  margin-bottom: 13px; }\n\n.AddMedicine {\n  max-width: 888px;\n  min-width: 300px;\n  margin: 0 auto; }\n\n.addbtn {\n  width: 235px;\n  color: white !important; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n#snackbar1 {\n  visibility: hidden;\n  /* Hidden by default. Visible on click */\n  min-width: 250px;\n  /* Set a default minimum width */\n  margin-left: -125px;\n  /* Divide value of min-width by 2 */\n  background-color: #333;\n  /* Black background color */\n  color: #fff;\n  /* White text color */\n  text-align: center;\n  /* Centered text */\n  border-radius: 2px;\n  /* Rounded borders */\n  padding: 16px;\n  /* Padding */\n  position: fixed;\n  /* Sit on top of the screen */\n  z-index: 1;\n  /* Add a z-index if needed */\n  left: 50%;\n  /* Center the snackbar */\n  bottom: 30px;\n  /* 30px from the bottom */ }\n\nagm-map {\n  height: 300px; }\n\n.AddDosage {\n  width: 297px; }\n\n.AddSize {\n  width: 297px; }\n\n/* Show the snackbar when clicking on a button (class added with JavaScript) */\n#snackbar1.show {\n  visibility: visible;\n  /* Show the snackbar */\n  /* Add animation: Take 0.5 seconds to fade in and out the snackbar. \r\nHowever, delay the fade out process for 2.5 seconds */\n  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;\n  animation: fadein 0.5s, fadeout 0.5s 2.5s; }\n\n/* Animations to fade the snackbar in and out */\n@-webkit-keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@-webkit-keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n\n@keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n"
+module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n#MedicineCategory {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 139px;\n  margin-left: 29px;\n  margin-bottom: 14px; }\n\n.AddMeasurement {\n  position: relative;\n  color: white;\n  text-align: center;\n  background-color: grey;\n  float: left; }\n\n#AddMeasurement button {\n  background: none;\n  border: 1px solid #ccc;\n  padding: 8px;\n  font-weight: bold;\n  width: auto;\n  display: inline-block;\n  margin-right: 10px;\n  margin-top: 10px; }\n\n.addbtn:hover {\n  color: white !important; }\n\n#MedicineDosage {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 139px;\n  margin-left: 37px; }\n\n#dosageValue {\n  margin-bottom: 12px;\n  border: 1px solid black;\n  padding-top: 12px;\n  padding-bottom: 12px; }\n\n#SelectDosageValue {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 126px;\n  margin-left: 2px; }\n\n#MedicineMeasurement {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 158px;\n  margin-left: 11px;\n  margin-top: -5px; }\n\n.addbtnMeasurement {\n  background-color: white;\n  width: 124px !important;\n  height: 30px;\n  margin-left: 22px; }\n\n#MedicineSubCategory {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 167px;\n  margin-left: 25px; }\n\n#measurementName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n.addbtn {\n  width: 235px;\n  color: white !important; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n#snackbar1 {\n  visibility: hidden;\n  /* Hidden by default. Visible on click */\n  min-width: 250px;\n  /* Set a default minimum width */\n  margin-left: -125px;\n  /* Divide value of min-width by 2 */\n  background-color: #333;\n  /* Black background color */\n  color: #fff;\n  /* White text color */\n  text-align: center;\n  /* Centered text */\n  border-radius: 2px;\n  /* Rounded borders */\n  padding: 16px;\n  /* Padding */\n  position: fixed;\n  /* Sit on top of the screen */\n  z-index: 1;\n  /* Add a z-index if needed */\n  left: 50%;\n  /* Center the snackbar */\n  bottom: 30px;\n  /* 30px from the bottom */ }\n\n#SelectMeasurement {\n  display: inline-flex;\n  margin-bottom: 3px; }\n\n#SelectDosage {\n  display: inline-block; }\n\n#SelectCategory {\n  display: inline-flex; }\n\n#SelectSubCategory {\n  display: inline-flex; }\n\n.AddMedicine {\n  max-width: 600px;\n  min-width: 300px;\n  margin: 0 auto; }\n\n.AddDosage {\n  width: 297px; }\n\n.AddSize {\n  width: 297px; }\n\n/* Show the snackbar when clicking on a button (class added with JavaScript) */\n#snackbar1.show {\n  visibility: visible;\n  /* Show the snackbar */\n  /* Add animation: Take 0.5 seconds to fade in and out the snackbar. \r\nHowever, delay the fade out process for 2.5 seconds */\n  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;\n  animation: fadein 0.5s, fadeout 0.5s 2.5s; }\n\n/* Animations to fade the snackbar in and out */\n@-webkit-keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@-webkit-keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n\n@keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n"
 
 /***/ },
 
-/***/ "./src/app/GetChemist/GetChemist.template.html":
+/***/ "./src/app/GetOrder/GetOrder.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div id=\"snackbar\"></div>\r\n\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n  \r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          Pharma\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login AddMedicine animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"font-size:36px;font-weight:900\">Chemist Data</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n                <select id=\"CityName\"(change)=\"getCityName($event.target.value)\">\r\n                    <option disabled selected value> -- select an option -- </option>\r\n                \r\n             <option *ngFor=\"let pharmacyName of AllChemistDataModelCity\" value=\"{{pharmacyName.Id}}\">{{pharmacyName.Name}}</option>\r\n               </select>\r\n              \r\n            \r\n            \r\n              \r\n               \r\n             \r\n               \r\n              <table class=\"table table-hover\">\r\n                  \r\n                      <tr>\r\n                          <td>Pharmacy Name</td>\r\n                          <td>Email</td>\r\n                          <td>Name</td>\r\n                          <td>Address</td>\r\n                          <td>City</td>\r\n                          <td>Latitude</td>\r\n                          <td>Longitude</td>\r\n                          <td>Mobile Number</td>\r\n                      </tr>\r\n                     \r\n                    <tr  *ngFor=\" let row1 of AllChemistDataModel\">\r\n                     \r\n                        <td>{{row1.Chemist.PharmacyName}}</td>\r\n                        <td>{{row1.Email}}</td>\r\n                        <td>{{row1.UserName}}</td>\r\n                        <td>{{row1.Chemist.Address}}</td>\r\n                        <td>{{row1.Chemist.City.Name}}</td>\r\n                        <td>{{row1.Chemist.Latitude}}</td>\r\n                        <td>{{row1.Chemist.Longitude}}</td>\r\n                        <td>{{row1.MobileNumber}}</td>\r\n                       \r\n\r\n                    </tr>\r\n                  \r\n                     \r\n                  \r\n                  \r\n              </table> \r\n              <div class=\"clearfix\">\r\n                  <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                    <a class=\"btn addbtn btn-inverse btn-sm\" (click)=\"GetChemistData()\">Add</a>\r\n                  </div>\r\n                </div>\r\n\r\n\r\n\r\n\r\n              \r\n               </form>\r\n              </div>\r\n             </section>\r\n     \r\n        </div>\r\n  </main>\r\n      </div>\r\n    \r\n  \r\n  \r\n\r\n"
+module.exports = "<div id=\"snackbar\"></div>\r\n\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n\r\n      <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n        <i class=\"fa fa-circle text-gray\"></i>\r\n        Pharma\r\n        <i class=\"fa fa-circle text-warning\"></i>\r\n      </h5>\r\n      <section class=\"widget widget-login AddMedicine animated fadeInUp\">\r\n        <header>\r\n          <h3 style=\"font-size:36px;font-weight:900\">Order List</h3>\r\n        </header>\r\n        <div class=\"widget-body\">\r\n          <p class=\"widget-login-info\">\r\n\r\n          </p>\r\n          <p class=\"widget-login-info\">\r\n\r\n          </p>\r\n          <form class=\"login-form mt-lg\">\r\n\r\n\r\n            <table class=\"table table-hover\">\r\n\r\n              <tr>\r\n\r\n                <td>Name</td>\r\n                <td>Order Status</td>\r\n                <td>OrderTotal</td>\r\n              </tr>\r\n\r\n              <ng-container *ngFor=\" let row1 of GetOrderDetailModelArray\">\r\n                <tr>\r\n                  <td>{{row1.User.UserName}}</td>\r\n                  <td>{{row1.OrderStatus}}</td>\r\n                  <td>{{row1.OrderTotal}}</td>\r\n\r\n\r\n\r\n                </tr>\r\n\r\n                <!-- <td > {{row2.User.UserName}}</td>\r\n                        <td>{{row2.Chemist.City}}</td>\r\n                        <td>{{row22.Chemist.Latitude}}</td> -->\r\n\r\n\r\n              </ng-container>\r\n\r\n\r\n\r\n\r\n            </table>\r\n            <div class=\"clearfix\">\r\n           \r\n            </div>\r\n\r\n\r\n\r\n\r\n\r\n          </form>\r\n        </div>\r\n      </section>\r\n\r\n    </div>\r\n  </main>\r\n</div>"
 
 /***/ },
 
-/***/ "./src/app/services/GetChemistDataService.ts":
+/***/ "./src/app/services/GetOrderService.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -133,73 +166,40 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var ServiceUrl_1 = __webpack_require__("./src/app/services/ServiceUrl.ts");
-var GetChemistDataService = (function () {
-    function GetChemistDataService(http) {
+var GetOrderService = (function () {
+    function GetOrderService(http) {
         this.http = http;
         this.urlService = new ServiceUrl_1.ServiceUrl();
     }
-    GetChemistDataService.prototype.GetRegisteredChemistService = function () {
+    GetOrderService.prototype.GetOrderDetailService = function () {
         var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getAllChemists?webRequest=1", options)
-            .map(function (res) {
-            console.log(res.json());
-            return res.json();
-        });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getOrdersByOrderStatus?orderStatus=100", options)
+            .map(function (res) { return res.json(); });
     };
-    GetChemistDataService.prototype.getSubCategoryService = function () {
-        var body = JSON.stringify({});
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getSubCategoriesByChemistIdByCategoryId?chemistId=1&categoryId=1", options)
-            .map(function (res) {
-            console.log(res.json());
-            return res.json();
-        });
-    };
-    GetChemistDataService.prototype.getDataByAreaIdService = function (AreadId) {
-        var body = JSON.stringify({});
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getChemistsListByArea?areaId" + AreadId, options)
-            .map(function (res) {
-            console.log(res.json());
-            return res.json();
-        });
-    };
-    GetChemistDataService.prototype.GetChemistService = function () {
-        var body = JSON.stringify({});
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getListOfPendingChemists", options)
-            .map(function (res) {
-            console.log(res.json());
-            return res.json();
-        });
-    };
-    GetChemistDataService.prototype.GetAllCitiesService = function () {
+    GetOrderService.prototype.GetAllCitiesService = function () {
         var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'get', headers: headers });
         return this.http.get(this.urlService.baseUrl + "City/getAllCities", options)
             .map(function (res) { return res.json(); });
     };
-    GetChemistDataService.prototype.getDataByCities = function (cityId) {
+    GetOrderService.prototype.getDataByCities = function (cityId) {
         var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'get', headers: headers });
         return this.http.get(this.urlService.baseUrl + "Chemist/getChemistsListByCity?CityId=" + cityId, options)
             .map(function (res) { return res.json(); });
     };
-    GetChemistDataService = __decorate([
+    GetOrderService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], GetChemistDataService);
-    return GetChemistDataService;
+    ], GetOrderService);
+    return GetOrderService;
     var _a;
 }());
-exports.GetChemistDataService = GetChemistDataService;
+exports.GetOrderService = GetOrderService;
 
 
 /***/ },
