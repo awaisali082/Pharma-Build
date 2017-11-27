@@ -108,40 +108,39 @@ var UpdateOrderStatusComponent = (function () {
             var OrderIdchanged = response.data.Id;
             var obj = _this.GetAllProductModelArray.find(function (x) { return x.Id == OrderIdchanged; });
             obj.OrderStatus = response.data.OrderStatus;
-            for (var i = 0; i < response.data.length; i++) {
-                if (obj.OrderStatus[i] == 100) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.PENDING;
-                }
-                else if (obj.OrderStatus[i] == 200) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.ONTHEWAY;
-                }
-                else if (obj.OrderStatus[i] == 300) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.DELIVERED;
-                }
-                else if (obj.OrderStatus[i] == 400) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.CONFIRMED;
-                }
-                else if (obj.OrderStatus[i] == 500) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.SHIPPED;
-                }
-                else if (obj.OrderStatus[i] == 600) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.NOTSHIPPED;
-                }
-                else if (obj.OrderStatus[i] == 700) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.CANCELED;
-                }
-                else if (obj.OrderStatus[i] == 800) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.COMPLETED;
-                }
-                else if (obj.OrderStatus[i] == 900) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.RETURNED;
-                }
-                else if (obj.OrderStatus[i] == 10) {
-                    _this.GetAllProductModelArray[i].OrderStatus = _this.TOBEDELIVERED;
-                }
-                else {
-                    alert("Not Available");
-                }
+            console.log(obj);
+            if (obj.OrderStatus == 100) {
+                obj.OrderStatus = _this.PENDING;
+            }
+            else if (obj.OrderStatus == 200) {
+                obj.OrderStatus = _this.ONTHEWAY;
+            }
+            else if (obj.OrderStatus == 300) {
+                obj.OrderStatus = _this.DELIVERED;
+            }
+            else if (obj.OrderStatus == 400) {
+                obj.OrderStatus = _this.CONFIRMED;
+            }
+            else if (obj.OrderStatus == 500) {
+                obj.OrderStatus = _this.SHIPPED;
+            }
+            else if (obj.OrderStatus == 600) {
+                obj.OrderStatus = _this.NOTSHIPPED;
+            }
+            else if (obj.OrderStatus == 700) {
+                obj.OrderStatus = _this.CANCELED;
+            }
+            else if (obj.OrderStatus == 800) {
+                obj.OrderStatus = _this.COMPLETED;
+            }
+            else if (obj.OrderStatus == 900) {
+                obj.OrderStatus = _this.RETURNED;
+            }
+            else if (obj.OrderStatus == 10) {
+                obj.OrderStatus = _this.TOBEDELIVERED;
+            }
+            else {
+                alert("Not Available");
             }
         });
     };
@@ -219,14 +218,14 @@ exports.default = UpdateOrderStatusModule;
 /***/ "./src/app/UpdateOrderStatus/UpdateOrderStatus.style.scss":
 /***/ function(module, exports) {
 
-module.exports = "/***********************************/\n/**             LOGIN             **/\n/***********************************/\n.login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n.btn {\n  width: 287px;\n  color: white !important; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n.updateStatus {\n  width: 542px; }\n\n.dropbtn {\n  background-color: #4CAF50;\n  color: white;\n  padding: 16px;\n  font-size: 16px;\n  border: none;\n  cursor: pointer; }\n\n.dropdown {\n  position: relative;\n  display: inline-block;\n  height: 50px;\n  margin-bottom: 13px; }\n\n.dropdown-content {\n  display: none;\n  position: absolute;\n  background-color: #f9f9f9;\n  min-width: 160px;\n  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);\n  z-index: 1; }\n\n.dropdown-content a {\n  color: black;\n  padding: 12px 16px;\n  text-decoration: none;\n  display: block; }\n\n.dropdown-content a:hover {\n  background-color: #f1f1f1; }\n\n.dropdown:hover .dropdown-content {\n  display: block; }\n\n.dropdown:hover .dropbtn {\n  background-color: #3e8e41; }\n"
+module.exports = "/***********************************/\n/**             LOGIN             **/\n/***********************************/\n.login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n.btn {\n  color: white !important;\n  display: inline-block;\n  margin-left: 12px; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n.updateStatus {\n  width: 542px; }\n\n.dropbtn {\n  background-color: #4CAF50;\n  color: white;\n  padding: 16px;\n  font-size: 16px;\n  border: none;\n  cursor: pointer; }\n\n.dropdown {\n  position: relative;\n  display: inline-block;\n  height: 50px;\n  margin-bottom: 13px; }\n\n.dropdown-content {\n  display: none;\n  position: absolute;\n  background-color: #f9f9f9;\n  min-width: 160px;\n  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);\n  z-index: 1; }\n\n.dropdown-content a {\n  color: black;\n  padding: 12px 16px;\n  text-decoration: none;\n  display: block; }\n\n.dropdown-content a:hover {\n  background-color: #f1f1f1; }\n\n.dropdown:hover .dropdown-content {\n  display: block; }\n\n.dropdown:hover .dropbtn {\n  background-color: #3e8e41; }\n"
 
 /***/ },
 
 /***/ "./src/app/UpdateOrderStatus/UpdateOrderStatus.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div id=\"snackbar\"></div>\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-4\">\r\n      </div>\r\n      <div class=\"col-md-4\">\r\n\r\n        <h5 class=\"widget-login-logo animated fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          Pharma\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login updateStatus animated fadeInUp\">\r\n          <header>\r\n            <h3>Update Order Status</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n\r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n\r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n           \r\n          \r\n              <table class=\"table table-hover\">\r\n\r\n                <tr>\r\n\r\n                  <td style=\"font-weight:600\">Name</td>\r\n                  <td style=\"font-weight:600\">Order Status</td>\r\n                  <td style=\"font-weight:600\">OrderTotal</td>\r\n                </tr>\r\n\r\n                <ng-container *ngFor=\" let row1 of GetAllProductModelArray\">\r\n                  <tr  (click)=GetOrderAndStatusfunction(row1.Id,row1.OrderStatus)> \r\n                    \r\n                    <td>{{row1.User.UserName}}</td>\r\n                    <td>{{row1.OrderStatus}}</td>\r\n                    <td>{{row1.OrderTotal}}</td>\r\n                    <select class=\"dropdown\"(change)=\"getStatusCategory($event.target.value)\">\r\n                        <option disabled selected value> -- select an option -- </option>\r\n                        <option value=\"100\">PENDING</option>\r\n                        <option value=\"200\">ONTHEWAY</option>\r\n                        <option value=\"300\">DELIVERED</option>\r\n                        <option value=\"400\">CONFIRMED</option>\r\n                        <option value=\"500\">SHIPPED</option>\r\n                        <option value=\"600\">NOT SHIPPED</option>\r\n                        <option value=\"700\">CANCELED</option>\r\n                        <option value=\"800\">COMPLETED</option>    \r\n                        <option value=\"900\">RETURNED</option>\r\n                        <option value=\"10\">TOBEDELIVERED</option>\r\n                       \r\n                    \r\n <!--   <option *ngFor=\"let Status of GetAllProductModelArray\" value=\"{{Status.Id}}\">{{Status.OrderStatus}}</option> -->\r\n                    </select> \r\n                 <!--    <div class=\"dropdown\">\r\n                        <button class=\"dropbtn\">Select Status</button>\r\n                        <div class=\"dropdown-content\" (change)=\"getStatusCategory($event.target.value)\" >\r\n                            <a (click)=GetOrderAndStatusfunction(row1.Id,$event.target.value) value=\"100\">PENDING</a>\r\n                            <a (click)=GetOrderAndStatusfunction(row1.Id,value) value=\"200\">ONTHEWAY</a>\r\n                            <a (click)=GetOrderAndStatusfunction(row1.Id,value) value=\"300\">DELIVERED</a>\r\n                            <a (click)=GetOrderAndStatusfunction(row1.Id,value) value=\"400\">CONFIRMED</a>\r\n                            <a (click)=GetOrderAndStatusfunction(row1.Id,value) value=\"500\">SHIPPED</a>\r\n                            <a (click)=GetOrderAndStatusfunction(row1.Id,value) value=\"600\">NOT SHIPPED</a>\r\n                            <a value=\"700\">CANCELED</a>\r\n                            <a value=\"800\">COMPLETED</a>    \r\n                            <a value=\"900\">RETURNED</a>\r\n                            <a value=\"10\">TOBEDELIVERED</a>\r\n                           \r\n                        </div>\r\n                      </div>  -->\r\n\r\n\r\n                  </tr>\r\n                </ng-container>\r\n\r\n              </table>\r\n              <div class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                  <a class=\"btn btn-inverse btn-sm\" (click)=\"UpdateOrderStatus()\">Update</a>\r\n                </div>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                    <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n\r\n\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </main>\r\n\r\n</div>"
+module.exports = "<div id=\"snackbar\"></div>\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-4\">\r\n      </div>\r\n      <div class=\"col-md-4\">\r\n\r\n        <h5 class=\"widget-login-logo animated fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          Pharma\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login updateStatus animated fadeInUp\">\r\n          <header>\r\n            <h3>Update Order Status</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n\r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n\r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n           \r\n          \r\n              <table class=\"table table-hover\">\r\n\r\n                <tr>\r\n\r\n                  <td style=\"font-weight:600\">Name</td>\r\n                  <td style=\"font-weight:600\">Order Status</td>\r\n                  <td style=\"font-weight:600\">OrderTotal</td>\r\n                </tr>\r\n\r\n                <ng-container *ngFor=\" let row1 of GetAllProductModelArray\">\r\n                  <tr  (click)=GetOrderAndStatusfunction(row1.Id,row1.OrderStatus)> \r\n                    \r\n                    <td>{{row1.User.UserName}}</td>\r\n                    <td>{{row1.OrderStatus}}</td>\r\n                    <td>{{row1.OrderTotal}}</td>\r\n                    \r\n                    <select class=\"dropdown\"(change)=\"getStatusCategory($event.target.value)\" >\r\n                       \r\n                        <option disabled selected value> -- select an option -- </option>\r\n                        <option value=\"100\">PENDING</option>\r\n                        <option value=\"200\">ONTHEWAY</option>\r\n                        <option value=\"300\">DELIVERED</option>\r\n                        <option value=\"400\">CONFIRMED</option>\r\n                        <option value=\"500\">SHIPPED</option>\r\n                        <option value=\"600\">NOT SHIPPED</option>\r\n                        <option value=\"700\">CANCELED</option>\r\n                        <option value=\"800\">COMPLETED</option>    \r\n                        <option value=\"900\">RETURNED</option>\r\n                        <option value=\"10\">TOBEDELIVERED</option>\r\n                                               \r\n                   </select> \r\n                   <td class=\"btn btn-inverse btn-sm\" (click)=\"UpdateOrderStatus()\">Update</td>\r\n</tr>\r\n\r\n                </ng-container>\r\n\r\n              </table>\r\n              <div class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n             \r\n                </div>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                    <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n\r\n\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </main>\r\n\r\n</div>"
 
 /***/ },
 

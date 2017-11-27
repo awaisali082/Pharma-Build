@@ -38,10 +38,8 @@ var GetPopularChemistComponent = (function () {
         this._getChemistDataService.GetAllCitiesService().subscribe(function (response) {
             _this.GetAllCitiesModelArray = response.data;
             console.log(_this.GetAllCitiesModelArray);
-            _this.getAllAreaName();
             jQuery("#snackbar1").html(response.message);
             _this.myFunction();
-            _this.getAllAreaName();
         });
     };
     GetPopularChemistComponent.prototype.getAreaId = function (AreaId) {
