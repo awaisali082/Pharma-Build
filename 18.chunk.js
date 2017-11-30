@@ -23,19 +23,19 @@ var DeleteProductComponent = (function () {
         this.GetCategoryByChemistIdModelArray = [];
         this.GetProductSubCategoryModelArray = [];
         this.GetProductCategoryModelArray = [];
-        this.GetChemistDataModelArray = [];
+        this.GetChemistProductDataModelArray = [];
         this.GetAllProductCategory = [];
-        this.GetAllProductModelArraySingle = [];
+        this.GetAll_ProductModelArraySingle = [];
         this.router = router;
         this.chemistId = localStorage.getItem("GetChemistId");
         this.ProductType = 100;
         this._getChemistDataService.GetChemistService().subscribe(function (response) {
             for (var i = 0; i < response.data.length; i++) {
-                _this.GetChemistDataModelArray.push(response.data[i]);
+                _this.GetChemistProductDataModelArray.push(response.data[i]);
             }
             jQuery("#snackbar").html("Show Pharmacacy Name  Successfully");
             _this.myFunction();
-            console.log('Chemist array', _this.GetChemistDataModelArray);
+            console.log('Chemist array', _this.GetChemistProductDataModelArray);
         });
     }
     DeleteProductComponent.prototype.getProductName = function (PharmacyId) {
@@ -45,8 +45,8 @@ var DeleteProductComponent = (function () {
         console.log(this.chemistId);
         this._GetProductService.GetPharmacyNameService(this.chemistId, this.ProductType).subscribe(function (response) {
             console.log(response.data);
-            _this.GetAllProductModelArraySingle = response.data;
-            console.log('chemistName', _this.GetAllProductModelArraySingle);
+            _this.GetAll_ProductModelArraySingle = response.data;
+            console.log('chemistName', _this.GetAll_ProductModelArraySingle);
         });
     };
     DeleteProductComponent.prototype.getProductId = function (ProductId) {
@@ -136,7 +136,7 @@ module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .pag
 /***/ "./src/app/DeleteProduct/DeleteProduct.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div id=\"snackbar\"></div>\r\n\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n\r\n      <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n        <i class=\"fa fa-circle text-gray\"></i>\r\n        Pharma\r\n        <i class=\"fa fa-circle text-warning\"></i>\r\n      </h5>\r\n      <section class=\"widget widget-login AddMedicine animated fadeInUp\">\r\n        <header>\r\n          <h3 style=\"font-size:36px;font-weight:900\">Delete product</h3>\r\n        </header>\r\n        <div class=\"widget-body\">\r\n          <p class=\"widget-login-info\">\r\n\r\n          </p>\r\n          <p class=\"widget-login-info\">\r\n\r\n          </p>\r\n          <form class=\"login-form mt-lg\">\r\n            <select id=\"ProductName\" (change)=\"getProductName($event.target.value)\">\r\n              <option disabled selected value> -- select an option -- </option>\r\n\r\n              <option *ngFor=\"let MedicineName of GetChemistDataModelArray\" value=\"{{MedicineName.ChemistId}}\">{{MedicineName.Chemist.PharmacyName}}</option>\r\n\r\n            </select>\r\n\r\n\r\n            <div class=\"container demo\">\r\n                \r\n                    \r\n                    <div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">\r\n                \r\n                        <div class=\"panel panel-default\"  *ngFor=\" let row1 of GetAllProductModelArraySingle\">\r\n                            <div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">\r\n                                <h4 class=\"panel-title\">\r\n                                    <a (click)=\"getProductId(row1.Id)\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse{{row1.Id}}\" aria-expanded=\"true\" >\r\n                                        \r\n                                        {{row1.Name}}\r\n                                    </a>\r\n                                </h4>\r\n                            </div>\r\n                            <div id=\"collapse{{row1.Id}}\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingOne\">\r\n                                <div class=\"panel-body\" *ngFor=\"let row2 of row1.WebDosageAndValuesDTOList\">\r\n                            \r\n                                  </div>\r\n                            </div>\r\n                        </div>\r\n                \r\n                  \r\n                \r\n                \r\n                    </div><!-- panel-group -->\r\n                    \r\n                    \r\n                </div>\r\n\r\n\r\n        \r\n            <div class=\"clearfix\">\r\n              \r\n            </div>\r\n\r\n\r\n\r\n\r\n\r\n          </form>\r\n        </div>\r\n      </section>\r\n\r\n    </div>\r\n  </main>\r\n</div>"
+module.exports = "<div id=\"snackbar\"></div>\r\n\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n\r\n      <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n   \r\n      </h5>\r\n      <section class=\"widget widget-login AddMedicine animated fadeInUp\">\r\n        <header>\r\n          <h3 style=\"text-transform:uppercase;\">Delete product</h3>\r\n        </header>\r\n        <div class=\"widget-body\">\r\n          <p class=\"widget-login-info\">\r\n\r\n          </p>\r\n          <p class=\"widget-login-info\">\r\n\r\n          </p>\r\n          <form class=\"login-form mt-lg\">\r\n            <select id=\"ProductName\" (change)=\"getProductName($event.target.value)\">\r\n              <option disabled selected value> -- select an option -- </option>\r\n\r\n              <option *ngFor=\"let MedicineName of GetChemistProductDataModelArray\" value=\"{{MedicineName.ChemistId}}\">{{MedicineName.Chemist.PharmacyName}}</option>\r\n\r\n            </select>\r\n\r\n\r\n            <div class=\"container demo\">\r\n                \r\n                    \r\n                    <div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">\r\n                \r\n                        <div class=\"panel panel-default\"  *ngFor=\" let row1 of GetAll_ProductModelArraySingle\">\r\n                            <div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">\r\n                                <h4 class=\"panel-title\">\r\n                                    <a (click)=\"getProductId(row1.Id)\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse{{row1.Id}}\" aria-expanded=\"true\" >\r\n                                        \r\n                                        {{row1.Name}}\r\n                                    </a>\r\n                                </h4>\r\n                            </div>\r\n                            <div id=\"collapse{{row1.Id}}\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingOne\">\r\n                                <div class=\"panel-body\" *ngFor=\"let row2 of row1.WebDosageAndValuesDTOList\">\r\n                            \r\n                                  </div>\r\n                            </div>\r\n                        </div>\r\n                \r\n                  \r\n                \r\n                \r\n                    </div><!-- panel-group -->\r\n                    \r\n                    \r\n                </div>\r\n\r\n\r\n        \r\n            <div class=\"clearfix\">\r\n              \r\n            </div>\r\n\r\n\r\n\r\n\r\n\r\n          </form>\r\n        </div>\r\n      </section>\r\n\r\n    </div>\r\n  </main>\r\n</div>"
 
 /***/ },
 

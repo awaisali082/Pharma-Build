@@ -13,7 +13,6 @@ var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
 var UpdateOrderStatusService_1 = __webpack_require__("./src/app/services/UpdateOrderStatusService.ts");
 var UpdateOrderStatusComponent = (function () {
     function UpdateOrderStatusComponent(_UpdateOrderStatusService, _getLaugisticService, _getPendingOrderService, _getOrderService, router) {
-        var _this = this;
         this._UpdateOrderStatusService = _UpdateOrderStatusService;
         this._getLaugisticService = _getLaugisticService;
         this._getPendingOrderService = _getPendingOrderService;
@@ -23,6 +22,12 @@ var UpdateOrderStatusComponent = (function () {
         this.GetLaugisticModelArray = [];
         this.GetLaugisticModeldata = [];
         this.PendingOrderServiceArray = [];
+        this.router = router;
+    }
+    UpdateOrderStatusComponent.prototype.getStatusCategory = function (StatusName) {
+        var _this = this;
+        this.Status_Name = StatusName;
+        console.log(StatusName);
         this.PENDING = "pending";
         this.ONTHEWAY = "On The way";
         this.DELIVERED = "Delivered";
@@ -33,10 +38,9 @@ var UpdateOrderStatusComponent = (function () {
         this.COMPLETED = "Completed";
         this.RETURNED = "Returned";
         this.TOBEDELIVERED = "To Be Delivered";
-        this.router = router;
         this.username = undefined;
         this.password = undefined;
-        this._getOrderService.GetOrderDetailService().subscribe(function (response) {
+        this._getOrderService.GetOrderDetailService(this.Status_Name).subscribe(function (response) {
             console.log(response.data);
             _this.GetAllProductModelArray = response.data;
             jQuery("#snackbar").html(response.message);
@@ -78,10 +82,6 @@ var UpdateOrderStatusComponent = (function () {
             }
         });
         console.log(this.GetLaugisticModelArray);
-    }
-    UpdateOrderStatusComponent.prototype.getStatusCategory = function (StatusName) {
-        this.Status_Name = StatusName;
-        console.log(StatusName);
     };
     UpdateOrderStatusComponent.prototype.GetOrderStatusId = function (OrderStatusId) {
         // this.OrderStatus_Id = OrderStatusId;
@@ -225,7 +225,7 @@ module.exports = "/***********************************/\n/**             LOGIN  
 /***/ "./src/app/UpdateOrderStatus/UpdateOrderStatus.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div id=\"snackbar\"></div>\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-4\">\r\n      </div>\r\n      <div class=\"col-md-4\">\r\n\r\n        <h5 class=\"widget-login-logo animated fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          Pharma\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login updateStatus animated fadeInUp\">\r\n          <header>\r\n            <h3>Update Order Status</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n\r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n\r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n           \r\n          \r\n              <table class=\"table table-hover\">\r\n\r\n                <tr>\r\n\r\n                  <td style=\"font-weight:600\">Name</td>\r\n                  <td style=\"font-weight:600\">Order Status</td>\r\n                  <td style=\"font-weight:600\">OrderTotal</td>\r\n                </tr>\r\n\r\n                <ng-container *ngFor=\" let row1 of GetAllProductModelArray\">\r\n                  <tr  (click)=GetOrderAndStatusfunction(row1.Id,row1.OrderStatus)> \r\n                    \r\n                    <td>{{row1.User.UserName}}</td>\r\n                    <td>{{row1.OrderStatus}}</td>\r\n                    <td>{{row1.OrderTotal}}</td>\r\n                    \r\n                    <select class=\"dropdown\"(change)=\"getStatusCategory($event.target.value)\" >\r\n                       \r\n                        <option disabled selected value> -- select an option -- </option>\r\n                        <option value=\"100\">PENDING</option>\r\n                        <option value=\"200\">ONTHEWAY</option>\r\n                        <option value=\"300\">DELIVERED</option>\r\n                        <option value=\"400\">CONFIRMED</option>\r\n                        <option value=\"500\">SHIPPED</option>\r\n                        <option value=\"600\">NOT SHIPPED</option>\r\n                        <option value=\"700\">CANCELED</option>\r\n                        <option value=\"800\">COMPLETED</option>    \r\n                        <option value=\"900\">RETURNED</option>\r\n                        <option value=\"10\">TOBEDELIVERED</option>\r\n                                               \r\n                   </select> \r\n                   <td class=\"btn btn-inverse btn-sm\" (click)=\"UpdateOrderStatus()\">Update</td>\r\n</tr>\r\n\r\n                </ng-container>\r\n\r\n              </table>\r\n              <div class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n             \r\n                </div>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                    <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n\r\n\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </main>\r\n\r\n</div>"
+module.exports = "<div id=\"snackbar\"></div>\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-4\">\r\n      </div>\r\n      <div class=\"col-md-4\">\r\n\r\n        <h5 class=\"widget-login-logo animated fadeInUp\">\r\n         \r\n        </h5>\r\n        <section class=\"widget widget-login updateStatus animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"text-transform:uppercase;\">Update Order Status</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n\r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n\r\n            </p>\r\n            <form class=\"login-form mt-lg\">\r\n           \r\n          \r\n              <table class=\"table table-hover\">\r\n\r\n                <tr>\r\n\r\n                  <td style=\"font-weight:600;color:#cccc\">Name</td>\r\n                  <td style=\"font-weight:600;color:#cccc\">Order Status</td>\r\n                  <td style=\"font-weight:600;color:#cccc\">OrderTotal</td>\r\n                </tr>\r\n\r\n                <ng-container *ngFor=\" let row1 of GetAllProductModelArray\">\r\n                  <tr  (click)=GetOrderAndStatusfunction(row1.Id,row1.OrderStatus)> \r\n                    \r\n                    <td >{{row1.User.UserName}}</td>\r\n                    <td>{{row1.OrderStatus}}</td>\r\n                    <td>{{row1.OrderTotal}}</td>\r\n                    \r\n                    <select class=\"dropdown\"(change)=\"getStatusCategory($event.target.value)\" >\r\n                       \r\n                        <option disabled selected value> -- select an option -- </option>\r\n                        <option value=\"100\">PENDING</option>\r\n                        <option value=\"200\">ONTHEWAY</option>\r\n                        <option value=\"300\">DELIVERED</option>\r\n                        <option value=\"400\">CONFIRMED</option>\r\n                        <option value=\"500\">SHIPPED</option>\r\n                        <option value=\"600\">NOT SHIPPED</option>\r\n                        <option value=\"700\">CANCELED</option>\r\n                        <option value=\"800\">COMPLETED</option>    \r\n                        <option value=\"900\">RETURNED</option>\r\n                        <option value=\"10\">TOBEDELIVERED</option>\r\n                                               \r\n                   </select> \r\n                   <td class=\"btn btn-inverse btn-sm\" (click)=\"UpdateOrderStatus()\">Update</td>\r\n</tr>\r\n\r\n                </ng-container>\r\n\r\n              </table>\r\n              <div class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n             \r\n                </div>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                   \r\n                  </div>\r\n                </div>\r\n\r\n\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </main>\r\n\r\n</div>"
 
 /***/ },
 
@@ -298,7 +298,14 @@ var GetOrderService = (function () {
         this.http = http;
         this.urlService = new ServiceUrl_1.ServiceUrl();
     }
-    GetOrderService.prototype.GetOrderDetailService = function () {
+    GetOrderService.prototype.GetOrderDetailService = function (Status_Value) {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getOrdersByOrderStatus?orderStatus=" + Status_Value, options)
+            .map(function (res) { return res.json(); });
+    };
+    GetOrderService.prototype.GetOrderDetailValueService = function () {
         var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'get', headers: headers });
