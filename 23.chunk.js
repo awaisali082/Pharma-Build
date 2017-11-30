@@ -76,6 +76,7 @@ var DeleteSubCategoryComponent = (function () {
             else {
                 jQuery("#snackbar1").html(response.message);
                 _this.myFunction();
+                _this.getCategoryId(_this.Category_Id);
             }
         });
     };

@@ -247,8 +247,8 @@ var AddchemistService = (function () {
         this.http = http;
         this.urlService = new ServiceUrl_1.ServiceUrl();
     }
-    AddchemistService.prototype.AddChemist = function (getArea_Id, ChemistEmail, CityId, ChemistName, ChemistPassword, Longitude, latitide, ChemistId) {
-        var body = JSON.stringify({ AreaId: getArea_Id, Email: ChemistEmail, CityId: CityId, Password: ChemistPassword, UserName: ChemistName, Longitude: Longitude, Latitude: latitide, ChemistId: ChemistId });
+    AddchemistService.prototype.AddChemist = function (getArea_Id, ChemistEmail, PharmaCommission, CityId, ChemistName, ChemistPassword, Longitude, latitide, ChemistId) {
+        var body = JSON.stringify({ PharmaCommission: PharmaCommission, AreaId: getArea_Id, Email: ChemistEmail, CityId: CityId, Password: ChemistPassword, UserName: ChemistName, Longitude: Longitude, Latitude: latitide, ChemistId: ChemistId });
         console.log(body);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });

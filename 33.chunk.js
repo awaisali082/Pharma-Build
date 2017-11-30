@@ -37,6 +37,7 @@ var DosageSizeComponent = (function () {
             jQuery("#snackbar1").html(response.message);
             _this.myFunction();
         });
+        this.DosageValue = undefined;
     };
     DosageSizeComponent.prototype.myFunction = function () {
         // Get the snackbar DIV

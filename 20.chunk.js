@@ -54,6 +54,7 @@ var PendingOrderComponent = (function () {
             jQuery("#snackbar").html(response.message);
             _this.myFunction();
         });
+        this.GetLaugisticModeldata = [];
         console.log(this.GetLaugisticModeldata);
     };
     PendingOrderComponent.prototype.myFunction = function () {
