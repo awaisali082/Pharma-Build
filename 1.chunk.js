@@ -25,9 +25,15 @@ var Login = (function () {
                     localStorage.setItem("UserId", response.data.Id);
                     localStorage.setItem("GetChemistId", response.data.ChemistId);
                     console.log(localStorage.getItem("UserType"));
+                    _this.AdminUserType = localStorage.getItem("UserType");
                     jQuery("#snackbar").html(response.message);
                     _this.myFunction();
-                    _this.router.navigate(["/app/dosage"]);
+                    if (_this.AdminUserType == 1) {
+                        _this.router.navigate(["/app/dosage"]);
+                    }
+                    else {
+                        _this.router.navigate(["/app/chemist"]);
+                    }
                 });
             }
             else {
