@@ -4,7 +4,7 @@ webpackJsonpac__name_([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
+"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var LoginService_1 = __webpack_require__("./src/app/services/LoginService.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
@@ -15,31 +15,26 @@ var Login = (function () {
     }
     Login.prototype.callLoginApi = function () {
         var _this = this;
-        if (this.username == undefined && this.password == undefined) {
-            alert("please fill empty fields");
-        }
-        else {
-            if (this.username != undefined && this.password != "" && this.password.trim().length != 0) {
-                this._loginService.login(this.username, this.password).subscribe(function (response) {
+        if (this.username != undefined && this.password != "" && this.password.trim().length != 0) {
+            this._loginService.login(this.username, this.password).subscribe(function (response) {
+                console.log(response);
+                if (response.message == "SUCCESS") {
                     localStorage.setItem("UserType", response.data.UserRole);
                     localStorage.setItem("UserId", response.data.Id);
                     localStorage.setItem("GetChemistId", response.data.ChemistId);
                     console.log(localStorage.getItem("UserType"));
                     _this.AdminUserType = localStorage.getItem("UserType");
-                    jQuery("#snackbar").html(response.message);
-                    _this.myFunction();
                     if (_this.AdminUserType == 1) {
                         _this.router.navigate(["/app/dosage"]);
                     }
                     else {
                         _this.router.navigate(["/app/chemist"]);
                     }
-                });
-            }
-            else {
-                jQuery("#snackbar").html("Invalid Credenntials");
-                this.myFunction();
-            }
+                }
+                else {
+                    alert("Wrong UserName/Password");
+                }
+            });
         }
     };
     Login.prototype.callChemistLoginApi = function () {
@@ -54,14 +49,11 @@ var Login = (function () {
                     console.log(response);
                     localStorage.setItem("UserType", response.data.UserType);
                     console.log(localStorage.getItem("UserType"));
-                    jQuery("#snackbar").html(response.message);
-                    _this.myFunction();
                     _this.router.navigate(["/app/dashboard"]);
                 });
             }
             else {
-                jQuery("#snackbar").html("Invalid Credenntials");
-                this.myFunction();
+                alert("Invalid Credenntials");
             }
         }
     };
@@ -91,7 +83,6 @@ var Login = (function () {
 }());
 exports.Login = Login;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
 
 /***/ },
 
