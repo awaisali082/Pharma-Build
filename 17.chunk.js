@@ -1,144 +1,95 @@
 webpackJsonpac__name_([17],{
 
-/***/ "./src/app/GetPopularChemist/GetPopularChemist.component.ts":
+/***/ "./src/app/DeleteProduct/DeleteProduct.component.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var AddAreaService_1 = __webpack_require__("./src/app/services/AddAreaService.ts");
-var GetChemistDataService_1 = __webpack_require__("./src/app/services/GetChemistDataService.ts");
-var AddchemistService_1 = __webpack_require__("./src/app/services/AddchemistService.ts");
-var GetPopularChemistService_1 = __webpack_require__("./src/app/services/GetPopularChemistService.ts");
-var GetPopularChemistComponent = (function () {
-    function GetPopularChemistComponent(_getPopularChemistService, _AddAreaNameService, _addChemistServiceService, _getChemistDataService, router) {
+var GetCategoryAndSubcategoryService_1 = __webpack_require__("./src/app/services/GetCategoryAndSubcategoryService.ts");
+var ProductDeleteService_1 = __webpack_require__("./src/app/services/ProductDeleteService.ts");
+var GetAllProductService_1 = __webpack_require__("./src/app/services/GetAllProductService.ts");
+var deleteProductByproductIdService_1 = __webpack_require__("./src/app/services/deleteProductByproductIdService.ts");
+var DeleteProductComponent = (function () {
+    function DeleteProductComponent(_DeleteProductByproductIdService, _GetProductService, _productDeleteService, _getChemistDataService, router) {
         var _this = this;
-        this._getPopularChemistService = _getPopularChemistService;
-        this._addChemistServiceService = _addChemistServiceService;
+        this._DeleteProductByproductIdService = _DeleteProductByproductIdService;
+        this._GetProductService = _GetProductService;
+        this._productDeleteService = _productDeleteService;
         this._getChemistDataService = _getChemistDataService;
-        this.SingleChemistDataModel = [];
-        this.GetAllCitiesModelArray = [];
-        this.GetAreaNameModelArray = [];
-        this.GetPopularChemistModelArray = [];
+        this.GetSubCategoryModelArray = [];
+        this.AddCategoryServiceArray = [];
+        this.GetCategoryByChemistIdModelArray = [];
+        this.GetProductSubCategoryModelArray = [];
+        this.GetProductCategoryModelArray = [];
+        this.GetChemistProductDataModelArray = [];
+        this.GetAllProductCategory = [];
+        this.GetAll_ProductModelArraySingle = [];
         this.router = router;
-        // this.SingleChemistDataModel.Chemist.PharmacyName=this.ChemistName;
-        this.GetChemistId = localStorage.getItem("GetChemistId");
+        this.chemistId = localStorage.getItem("GetChemistId");
         this.ProductType = 100;
-        this._getPopularChemistService.GetPopularChemist().subscribe(function (response) {
-            _this.GetPopularChemistModelArray = response.data;
-            console.log('Chemist name', _this.GetPopularChemistModelArray);
-            jQuery("#snackbar1").html(response.message);
+        this._getChemistDataService.GetChemistService().subscribe(function (response) {
+            for (var i = 0; i < response.data.length; i++) {
+                _this.GetChemistProductDataModelArray.push(response.data[i]);
+            }
+            jQuery("#snackbar").html("Show Pharmacacy Name  Successfully");
             _this.myFunction();
-            _this.getAllCities();
+            console.log('Chemist array', _this.GetChemistProductDataModelArray);
         });
     }
-    GetPopularChemistComponent.prototype.getAllCities = function () {
+    DeleteProductComponent.prototype.getProductName = function (PharmacyId) {
         var _this = this;
-        this._getChemistDataService.GetAllCitiesService().subscribe(function (response) {
-            _this.GetAllCitiesModelArray = response.data;
-            console.log(_this.GetAllCitiesModelArray);
-            jQuery("#snackbar1").html(response.message);
-            _this.myFunction();
+        console.log("Inside");
+        this.chemistId = PharmacyId;
+        console.log(this.chemistId);
+        this._GetProductService.GetPharmacyNameService(this.chemistId, this.ProductType).subscribe(function (response) {
+            console.log(response.data);
+            _this.GetAll_ProductModelArraySingle = response.data;
+            console.log('chemistName', _this.GetAll_ProductModelArraySingle);
         });
     };
-    GetPopularChemistComponent.prototype.getAreaId = function (AreaId) {
-        this.getArea_Id = AreaId;
+    DeleteProductComponent.prototype.getProductId = function (ProductId) {
+        console.log('product Id', ProductId);
+        this._DeleteProductByproductIdService.DeleteProductIdService(ProductId).subscribe(function (response) {
+            console.log(response);
+        });
+        jQuery("#snackbar").html("Delete Product  Successfully");
+        this.myFunction();
+        var index = this.GetAll_ProductModelArraySingle.findIndex(function (x) { return x.Id == ProductId; });
+        this.GetAll_ProductModelArraySingle.splice(index, 1);
     };
-    GetPopularChemistComponent.prototype.getCityName = function (cityId) {
-    };
-    GetPopularChemistComponent.prototype.getPharmacyId = function (PharmacyID) {
-        var _this = this;
-        this.PharmacyId = PharmacyID;
-        console.log(this.PharmacyId);
-        var obj = this.SingleChemistDataModel.find(function (x) { return x.ChemistId == _this.PharmacyId; });
-        this.GetChemistId = obj.Chemist.Id;
-        localStorage.setItem("GetChemistId", obj.ChemistId.toString());
-        this.GetChemistId = localStorage.getItem("GetChemistId");
-        this.Address = obj.Chemist.Address;
-        this.FullName = obj.FullName;
-        console.log(obj);
-        console.log(this.Address);
-        console.log(this.FullName);
-    };
-    GetPopularChemistComponent.prototype.ngOnInit = function () {
-        setTimeout(function () {
-            jQuery('#somecomponent').locationpicker({
-                location: {
-                    latitude: 30.3753,
-                    longitude: 69.3451
-                },
-                radius: 300,
-                inputBinding: {
-                    latitudeInput: jQuery('#us7-lat'),
-                    longitudeInput: jQuery('#us7-lon'),
-                    radiusInput: jQuery('#us7-radius'),
-                    locationNameInput: jQuery('#us7-address'),
-                },
-                enableAutocomplete: true
-            });
-        }, 3000);
-    };
-    GetPopularChemistComponent.prototype.addChemist = function () {
-        var _this = this;
-        this.Longitude = jQuery("#us7-lon").val();
-        this.Latitude = jQuery("#us7-lat").val();
-        console.log(this.Longitude);
-        if (!this.ChemistEmail || !this.ChemistName || !this.ChemistPassword || !this.Longitude || !this.Latitude) {
-            //alert("empty");
-            jQuery("#snackbar1").html("Please enter Empty field");
-            this.myFunction();
-        }
-        else {
-            this.RegularExpression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            if (this.RegularExpression.test(this.ChemistEmail)) {
-                this.Longitude = jQuery("#us7-lon").val();
-                this.Latitude = jQuery("#us7-lat").val();
-                this.ChemistId = localStorage.getItem("GetChemistId");
-                console.log(this.ChemistId);
-                this._addChemistServiceService.AddChemist(this.getArea_Id, this.ChemistEmail, this.CityId, this.ChemistName, this.ChemistPassword, this.Longitude, this.Latitude, this.PharmacyId).subscribe(function (response) {
-                    console.log(response.data);
-                    jQuery("#snackbar1").html("Add Chemist Successfully");
-                    _this.myFunction();
-                });
-            }
-            else {
-                jQuery("#snackbar1").html("Email is not Valid");
-                this.myFunction();
-            }
-        }
-    };
-    GetPopularChemistComponent.prototype.myFunction = function () {
+    DeleteProductComponent.prototype.myFunction = function () {
         // Get the snackbar DIV
-        var x = document.getElementById("snackbar1");
+        var x = document.getElementById("snackbar");
         // Add the "show" class to DIV
         x.className = "show";
         // After 3 seconds, remove the show class from DIV
         setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
     };
-    GetPopularChemistComponent = __decorate([
+    DeleteProductComponent = __decorate([
         core_1.Component({
-            selector: 'GetPopularChemist',
-            providers: [GetPopularChemistService_1.GetPopularChemistService, AddchemistService_1.AddchemistService, GetChemistDataService_1.GetChemistDataService, AddAreaService_1.AddAreaService],
-            styles: [__webpack_require__("./src/app/GetPopularChemist/GetPopularChemist.style.scss")],
-            template: __webpack_require__("./src/app/GetPopularChemist/GetPopularChemist.template.html"),
+            selector: 'DeleteProduct',
+            providers: [deleteProductByproductIdService_1.deleteProductByproductIdService, GetAllProductService_1.GetAllProductService, ProductDeleteService_1.ProductDeleteService, GetCategoryAndSubcategoryService_1.GetCategoryAndSubcategoryService],
+            styles: [__webpack_require__("./src/app/DeleteProduct/DeleteProduct.style.scss")],
+            template: __webpack_require__("./src/app/DeleteProduct/DeleteProduct.template.html"),
             encapsulation: core_1.ViewEncapsulation.None,
             host: {
                 class: 'chemist-page app'
             },
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof GetPopularChemistService_1.GetPopularChemistService !== 'undefined' && GetPopularChemistService_1.GetPopularChemistService) === 'function' && _a) || Object, (typeof (_b = typeof AddAreaService_1.AddAreaService !== 'undefined' && AddAreaService_1.AddAreaService) === 'function' && _b) || Object, (typeof (_c = typeof AddchemistService_1.AddchemistService !== 'undefined' && AddchemistService_1.AddchemistService) === 'function' && _c) || Object, (typeof (_d = typeof GetChemistDataService_1.GetChemistDataService !== 'undefined' && GetChemistDataService_1.GetChemistDataService) === 'function' && _d) || Object, (typeof (_e = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _e) || Object])
-    ], GetPopularChemistComponent);
-    return GetPopularChemistComponent;
+        __metadata('design:paramtypes', [(typeof (_a = typeof deleteProductByproductIdService_1.deleteProductByproductIdService !== 'undefined' && deleteProductByproductIdService_1.deleteProductByproductIdService) === 'function' && _a) || Object, (typeof (_b = typeof GetAllProductService_1.GetAllProductService !== 'undefined' && GetAllProductService_1.GetAllProductService) === 'function' && _b) || Object, (typeof (_c = typeof ProductDeleteService_1.ProductDeleteService !== 'undefined' && ProductDeleteService_1.ProductDeleteService) === 'function' && _c) || Object, (typeof (_d = typeof GetCategoryAndSubcategoryService_1.GetCategoryAndSubcategoryService !== 'undefined' && GetCategoryAndSubcategoryService_1.GetCategoryAndSubcategoryService) === 'function' && _d) || Object, (typeof (_e = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _e) || Object])
+    ], DeleteProductComponent);
+    return DeleteProductComponent;
     var _a, _b, _c, _d, _e;
 }());
-exports.GetPopularChemistComponent = GetPopularChemistComponent;
+exports.DeleteProductComponent = DeleteProductComponent;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
 
 /***/ },
 
-/***/ "./src/app/GetPopularChemist/GetPopularChemist.module.ts":
+/***/ "./src/app/DeleteProduct/DeleteProduct.module.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -147,19 +98,19 @@ var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var GetPopularChemist_component_1 = __webpack_require__("./src/app/GetPopularChemist/GetPopularChemist.component.ts");
+var DeleteProduct_component_1 = __webpack_require__("./src/app/DeleteProduct/DeleteProduct.component.ts");
 __webpack_require__("./node_modules/jquery-locationpicker/src/locationpicker.jquery.js");
 exports.routes = [
-    { path: '', component: GetPopularChemist_component_1.GetPopularChemistComponent, pathMatch: 'full' }
+    { path: '', component: DeleteProduct_component_1.DeleteProductComponent, pathMatch: 'full' }
 ];
-var GetPopularChemistModule = (function () {
-    function GetPopularChemistModule() {
+var DeleteProductModule = (function () {
+    function DeleteProductModule() {
     }
-    GetPopularChemistModule.routes = exports.routes;
-    GetPopularChemistModule = __decorate([
+    DeleteProductModule.routes = exports.routes;
+    DeleteProductModule = __decorate([
         core_1.NgModule({
             declarations: [
-                GetPopularChemist_component_1.GetPopularChemistComponent
+                DeleteProduct_component_1.DeleteProductComponent
             ],
             imports: [
                 common_1.CommonModule,
@@ -168,30 +119,30 @@ var GetPopularChemistModule = (function () {
             ]
         }), 
         __metadata('design:paramtypes', [])
-    ], GetPopularChemistModule);
-    return GetPopularChemistModule;
+    ], DeleteProductModule);
+    return DeleteProductModule;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = GetPopularChemistModule;
+exports.default = DeleteProductModule;
 
 
 /***/ },
 
-/***/ "./src/app/GetPopularChemist/GetPopularChemist.style.scss":
+/***/ "./src/app/DeleteProduct/DeleteProduct.style.scss":
 /***/ function(module, exports) {
 
-module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n#PharmacyName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n#us7-lat {\n  width: 237px; }\n\n#us7-lon {\n  width: 237px; }\n\n#us7-radius {\n  width: 260px; }\n\n#us7-address {\n  width: 260px; }\n\n#measurementName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n.addbtn {\n  width: 235px;\n  color: white !important; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n#snackbar1 {\n  visibility: hidden;\n  /* Hidden by default. Visible on click */\n  min-width: 250px;\n  /* Set a default minimum width */\n  margin-left: -125px;\n  /* Divide value of min-width by 2 */\n  background-color: #333;\n  /* Black background color */\n  color: #fff;\n  /* White text color */\n  text-align: center;\n  /* Centered text */\n  border-radius: 2px;\n  /* Rounded borders */\n  padding: 16px;\n  /* Padding */\n  position: fixed;\n  /* Sit on top of the screen */\n  z-index: 1;\n  /* Add a z-index if needed */\n  left: 50%;\n  /* Center the snackbar */\n  bottom: 30px;\n  /* 30px from the bottom */ }\n\nagm-map {\n  height: 300px; }\n\n.AddDosage {\n  width: 297px; }\n\n.AddSize {\n  width: 327px; }\n\n/* Show the snackbar when clicking on a button (class added with JavaScript) */\n#snackbar1.show {\n  visibility: visible;\n  /* Show the snackbar */\n  /* Add animation: Take 0.5 seconds to fade in and out the snackbar. \r\nHowever, delay the fade out process for 2.5 seconds */\n  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;\n  animation: fadein 0.5s, fadeout 0.5s 2.5s; }\n\n/* Animations to fade the snackbar in and out */\n@-webkit-keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@-webkit-keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n\n@keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n"
+module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n#ProductName {\n  width: 100%;\n  height: 30px;\n  background-color: #eceeef;\n  margin-bottom: 13px; }\n\n#PharmacyName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n#us7-lat {\n  width: 237px; }\n\n#us7-lon {\n  width: 237px; }\n\n#us7-radius {\n  width: 260px; }\n\n#us7-address {\n  width: 260px; }\n\n#measurementName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n.addbtn {\n  width: 235px;\n  color: white !important; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n#snackbar1 {\n  visibility: hidden;\n  /* Hidden by default. Visible on click */\n  min-width: 250px;\n  /* Set a default minimum width */\n  margin-left: -125px;\n  /* Divide value of min-width by 2 */\n  background-color: #333;\n  /* Black background color */\n  color: #fff;\n  /* White text color */\n  text-align: center;\n  /* Centered text */\n  border-radius: 2px;\n  /* Rounded borders */\n  padding: 16px;\n  /* Padding */\n  position: fixed;\n  /* Sit on top of the screen */\n  z-index: 1;\n  /* Add a z-index if needed */\n  left: 50%;\n  /* Center the snackbar */\n  bottom: 30px;\n  /* 30px from the bottom */ }\n\nagm-map {\n  height: 300px; }\n\n.AddDosage {\n  width: 297px; }\n\n.AddSize {\n  width: 297px; }\n\n/* Show the snackbar when clicking on a button (class added with JavaScript) */\n#snackbar1.show {\n  visibility: visible;\n  /* Show the snackbar */\n  /* Add animation: Take 0.5 seconds to fade in and out the snackbar. \r\nHowever, delay the fade out process for 2.5 seconds */\n  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;\n  animation: fadein 0.5s, fadeout 0.5s 2.5s; }\n\n/* Animations to fade the snackbar in and out */\n@-webkit-keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@-webkit-keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n\n@keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n"
 
 /***/ },
 
-/***/ "./src/app/GetPopularChemist/GetPopularChemist.template.html":
+/***/ "./src/app/DeleteProduct/DeleteProduct.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div id=\"snackbar1\"></div>\r\n<div class=\"row\">\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xs-3 col-md-5\">\r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n\r\n        </h5>\r\n        <section class=\"widget widget-login  AddSize animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"text-transform:uppercase;\">Popular Chemist</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            \r\n            <form class=\"login-form mt-lg\">\r\n         \r\n                <table class=\"table table-hover\">\r\n                    \r\n                                  <tr>\r\n                    \r\n                                    <td>Name</td>\r\n                                    <td>Address</td>\r\n                                    <td>City Name</td>\r\n                                  </tr>\r\n                    \r\n                                  <ng-container *ngFor=\" let row1 of GetPopularChemistModelArray\">\r\n                                    <tr>\r\n                                      <td>{{row1.Chemist.PharmacyName}}</td>\r\n                                      <td>{{row1.Chemist.Address}}</td>\r\n                                      <td>{{row1.Chemist.City.Name}}</td>\r\n                    \r\n                    \r\n                    \r\n                                    </tr>\r\n                    \r\n                                    <!-- <td > {{row2.User.UserName}}</td>\r\n                                            <td>{{row2.Chemist.City}}</td>\r\n                                            <td>{{row22.Chemist.Latitude}}</td> -->\r\n                    \r\n                    \r\n                                  </ng-container>\r\n                                  </table>\r\n \r\n              <div class=\"clearfix\">\r\n               \r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                   <!--  <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div> -->\r\n                  </div>\r\n                </div>\r\n\r\n               <!--  <div class=\"col-md-6 pull-md-6\">\r\n                  <a class=\"mr-n-lg\" href=\"#\">Trouble with account?</a>\r\n                </div> -->\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n      </div>\r\n\r\n     \r\n  \r\n  \r\n\r\n\r\n\r\n\r\n      \r\n    </div>\r\n  </main>\r\n <!--  <footer class=\"page-footer\">\r\n    2016 &copy; Sing. Admin Dashboard Template.\r\n  </footer> -->\r\n</div>\r\n\r\n</div>\r\n"
+module.exports = "<div id=\"snackbar\"></div>\r\n\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n        <div class=\"col-md-4\">\r\n            \r\n                          \r\n                        \r\n      <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n   \r\n      </h5>\r\n\r\n    </div>\r\n    <div class=\"col-md-4\">\r\n        \r\n        <section class=\"widget widget-login AddMedicine animated fadeInUp\">\r\n            <header>\r\n              <h3 style=\"text-transform:uppercase;\">Delete product</h3>\r\n            </header>\r\n            <div class=\"widget-body\">\r\n              <p class=\"widget-login-info\">\r\n    \r\n              </p>\r\n              <p class=\"widget-login-info\">\r\n    \r\n              </p>\r\n              <form class=\"login-form mt-lg\">\r\n                <select id=\"ProductName\" (change)=\"getProductName($event.target.value)\">\r\n                  <option disabled selected value> -- select an option -- </option>\r\n    \r\n                  <option *ngFor=\"let MedicineName of GetChemistProductDataModelArray\" value=\"{{MedicineName.ChemistId}}\">{{MedicineName.Chemist.PharmacyName}}</option>\r\n    \r\n                </select>\r\n    \r\n    \r\n                <div class=\"container demo\">\r\n                    \r\n                        \r\n                        <div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">\r\n                    \r\n                            <div class=\"panel panel-default\"  *ngFor=\" let row1 of GetAll_ProductModelArraySingle\">\r\n                                <div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">\r\n                                    <h4 class=\"panel-title\">\r\n                                        <a (click)=\"getProductId(row1.Id)\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse{{row1.Id}}\" aria-expanded=\"true\" >\r\n                                            \r\n                                            {{row1.Name}}\r\n                                        </a>\r\n                                    </h4>\r\n                                </div>\r\n                                <div id=\"collapse{{row1.Id}}\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingOne\">\r\n                                    <div class=\"panel-body\" *ngFor=\"let row2 of row1.WebDosageAndValuesDTOList\">\r\n                                \r\n                                      </div>\r\n                                </div>\r\n                            </div>\r\n                    \r\n                      \r\n                    \r\n                    \r\n                        </div><!-- panel-group -->\r\n                        \r\n                        \r\n                    </div>\r\n    \r\n    \r\n            \r\n                <div class=\"clearfix\">\r\n                  \r\n                </div>\r\n    \r\n    \r\n    \r\n    \r\n    \r\n              </form>\r\n            </div>\r\n          </section>                      \r\n                    </div>\r\n                    <div class=\"col-md-4\">\r\n                        \r\n                                      \r\n                                    </div>\r\n\r\n    </div>\r\n  </main>\r\n</div>"
 
 /***/ },
 
-/***/ "./src/app/services/AddAreaService.ts":
+/***/ "./src/app/services/GetAllProductService.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -200,74 +151,38 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var ServiceUrl_1 = __webpack_require__("./src/app/services/ServiceUrl.ts");
-var AddAreaService = (function () {
-    function AddAreaService(http) {
+var GetAllProductService = (function () {
+    function GetAllProductService(http) {
         this.http = http;
         this.urlService = new ServiceUrl_1.ServiceUrl();
     }
-    AddAreaService.prototype.addArea = function (cityId, AreaName) {
-        var body = JSON.stringify({ CityId: cityId, AreaName: AreaName });
-        console.log(body);
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.urlService.baseUrl + "City/addArea", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    AddAreaService.prototype.getAreaName = function (CityId) {
+    GetAllProductService.prototype.getAllMedicineName = function (ChemistId, ProductType) {
         var body = JSON.stringify({});
-        console.log(body);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "City/getAllAreasByCityId?CityId=" + CityId, options)
+        return this.http.get(this.urlService.baseUrl + "Chemist/getAllProductsByChemistId?ChemistId=" + ChemistId + "&ProductType=" + ProductType, options)
             .map(function (res) { return res.json(); });
     };
-    AddAreaService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], AddAreaService);
-    return AddAreaService;
-    var _a;
-}());
-exports.AddAreaService = AddAreaService;
-
-
-/***/ },
-
-/***/ "./src/app/services/AddchemistService.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
-__webpack_require__("./node_modules/rxjs/add/operator/map.js");
-var ServiceUrl_1 = __webpack_require__("./src/app/services/ServiceUrl.ts");
-var AddchemistService = (function () {
-    function AddchemistService(http) {
-        this.http = http;
-        this.urlService = new ServiceUrl_1.ServiceUrl();
-    }
-    AddchemistService.prototype.AddChemist = function (getArea_Id, ChemistEmail, PharmaCommission, CityId, ChemistName, ChemistPassword, Longitude, latitide, ChemistId) {
-        var body = JSON.stringify({ PharmaCommission: PharmaCommission, AreaId: getArea_Id, Email: ChemistEmail, CityId: CityId, Password: ChemistPassword, UserName: ChemistName, Longitude: Longitude, Latitude: latitide, ChemistId: ChemistId });
-        console.log(body);
+    GetAllProductService.prototype.GetPharmacyNameService = function (ChemistId, ProductType) {
+        var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.urlService.baseUrl + "User/addChemistDetail", body, options)
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getAllProductsByChemistId?ChemistId=" + ChemistId + "&ProductType=" + ProductType, options)
             .map(function (res) { return res.json(); });
     };
-    AddchemistService = __decorate([
+    GetAllProductService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], AddchemistService);
-    return AddchemistService;
+    ], GetAllProductService);
+    return GetAllProductService;
     var _a;
 }());
-exports.AddchemistService = AddchemistService;
+exports.GetAllProductService = GetAllProductService;
 
 
 /***/ },
 
-/***/ "./src/app/services/GetChemistDataService.ts":
+/***/ "./src/app/services/GetCategoryAndSubcategoryService.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -276,78 +191,66 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var ServiceUrl_1 = __webpack_require__("./src/app/services/ServiceUrl.ts");
-var GetChemistDataService = (function () {
-    function GetChemistDataService(http) {
+var GetCategoryAndSubcategoryService = (function () {
+    function GetCategoryAndSubcategoryService(http) {
         this.http = http;
         this.urlService = new ServiceUrl_1.ServiceUrl();
     }
-    GetChemistDataService.prototype.GetRegisteredChemistService = function () {
+    GetCategoryAndSubcategoryService.prototype.GetSubCateogry = function () {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getAllCategoriesAndSubCategories", options)
+            .map(function (res) { return res.json(); });
+    };
+    GetCategoryAndSubcategoryService.prototype.getCateogry = function (chemistId) {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getCategoriesByChemistId?chemistId=" + chemistId, options)
+            .map(function (res) { return res.json(); });
+    };
+    GetCategoryAndSubcategoryService.prototype.GetChemistService = function () {
         var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'get', headers: headers });
         return this.http.get(this.urlService.baseUrl + "Chemist/getAllChemists?webRequest=1", options)
-            .map(function (res) {
-            console.log(res.json());
-            return res.json();
-        });
-    };
-    GetChemistDataService.prototype.getSubCategoryService = function () {
-        var body = JSON.stringify({});
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getSubCategoriesByChemistIdByCategoryId?chemistId=1&categoryId=1", options)
-            .map(function (res) {
-            console.log(res.json());
-            return res.json();
-        });
-    };
-    GetChemistDataService.prototype.getDataByAreaIdService = function (AreadId) {
-        var body = JSON.stringify({});
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getChemistsListByArea?areaId" + AreadId, options)
-            .map(function (res) {
-            console.log(res.json());
-            return res.json();
-        });
-    };
-    GetChemistDataService.prototype.GetChemistService = function () {
-        var body = JSON.stringify({});
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getListOfPendingChemists", options)
-            .map(function (res) {
-            console.log(res.json());
-            return res.json();
-        });
-    };
-    GetChemistDataService.prototype.GetAllCitiesService = function () {
-        var body = JSON.stringify({});
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "City/getAllCities", options)
             .map(function (res) { return res.json(); });
     };
-    GetChemistDataService.prototype.getDataByCities = function (cityId) {
+    GetCategoryAndSubcategoryService.prototype.GetChemistCategoryService = function (ChemistId) {
         var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getChemistsListByCity?CityId=" + cityId, options)
+        return this.http.get(this.urlService.baseUrl + "Chemist/getCategoriesByChemistId?chemistId=" + ChemistId, options)
             .map(function (res) { return res.json(); });
     };
-    GetChemistDataService = __decorate([
+    GetCategoryAndSubcategoryService.prototype.GetProductCategoryService = function (ChemistId, ProductType) {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getAllProductsByChemistId?ChemistId=" + ChemistId + "&ProductType=" + ProductType, options)
+            .map(function (res) { return res.json(); });
+    };
+    GetCategoryAndSubcategoryService.prototype.GetProducSubCategoryService = function (ChemistId, categoryId) {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/getSubCategoriesByChemistIdByCategoryId?chemistId=" + ChemistId + "&categoryId=" + categoryId, options)
+            .map(function (res) { return res.json(); });
+    };
+    GetCategoryAndSubcategoryService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], GetChemistDataService);
-    return GetChemistDataService;
+    ], GetCategoryAndSubcategoryService);
+    return GetCategoryAndSubcategoryService;
     var _a;
 }());
-exports.GetChemistDataService = GetChemistDataService;
+exports.GetCategoryAndSubcategoryService = GetCategoryAndSubcategoryService;
 
 
 /***/ },
 
-/***/ "./src/app/services/GetPopularChemistService.ts":
+/***/ "./src/app/services/ProductDeleteService.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -356,26 +259,26 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var ServiceUrl_1 = __webpack_require__("./src/app/services/ServiceUrl.ts");
-var GetPopularChemistService = (function () {
-    function GetPopularChemistService(http) {
+var ProductDeleteService = (function () {
+    function ProductDeleteService(http) {
         this.http = http;
         this.urlService = new ServiceUrl_1.ServiceUrl();
     }
-    GetPopularChemistService.prototype.GetPopularChemist = function () {
+    ProductDeleteService.prototype.ProductDeleteCServices = function (CategoryID) {
         var body = JSON.stringify({});
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'get', headers: headers });
-        return this.http.get(this.urlService.baseUrl + "Chemist/getPopularChemists", options)
+        return this.http.get(this.urlService.baseUrl + "Chemist/deleteCategoryById?categoryId=" + CategoryID, options)
             .map(function (res) { return res.json(); });
     };
-    GetPopularChemistService = __decorate([
+    ProductDeleteService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], GetPopularChemistService);
-    return GetPopularChemistService;
+    ], ProductDeleteService);
+    return ProductDeleteService;
     var _a;
 }());
-exports.GetPopularChemistService = GetPopularChemistService;
+exports.ProductDeleteService = ProductDeleteService;
 
 
 /***/ },
@@ -397,6 +300,39 @@ var ServiceUrl = (function () {
     return ServiceUrl;
 }());
 exports.ServiceUrl = ServiceUrl;
+
+
+/***/ },
+
+/***/ "./src/app/services/deleteProductByproductIdService.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+__webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var ServiceUrl_1 = __webpack_require__("./src/app/services/ServiceUrl.ts");
+var deleteProductByproductIdService = (function () {
+    function deleteProductByproductIdService(http) {
+        this.http = http;
+        this.urlService = new ServiceUrl_1.ServiceUrl();
+    }
+    deleteProductByproductIdService.prototype.DeleteProductIdService = function (productId) {
+        var body = JSON.stringify({});
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'get', headers: headers });
+        return this.http.get(this.urlService.baseUrl + "Chemist/deleteProductById?productId=" + productId, options)
+            .map(function (res) { return res.json(); });
+    };
+    deleteProductByproductIdService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], deleteProductByproductIdService);
+    return deleteProductByproductIdService;
+    var _a;
+}());
+exports.deleteProductByproductIdService = deleteProductByproductIdService;
 
 
 /***/ }
