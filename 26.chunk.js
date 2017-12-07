@@ -12,11 +12,18 @@ var DosageComponent = (function () {
     function DosageComponent(_addUnitService, router) {
         var _this = this;
         this._addUnitService = _addUnitService;
-        this.router = router;
-        this._addUnitService.getAllUnitValues().subscribe(function (response) {
-            _this.GetDosageModel = response.data;
-            console.log(_this.GetDosageModel);
-        });
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+            this._addUnitService.getAllUnitValues().subscribe(function (response) {
+                _this.GetDosageModel = response.data;
+                console.log(_this.GetDosageModel);
+                console.log(localStorage.getItem("UserType"));
+            });
+        }
     }
     DosageComponent.prototype.getmeasurementId = function (unitId) {
         this.unitId = unitId;

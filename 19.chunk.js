@@ -20,16 +20,22 @@ var PendingOrderComponent = (function () {
         this.GetLaugisticModelArray = [];
         this.GetLaugisticModeldata = [];
         this.PendingOrderServiceArray = [];
-        this.router = router;
-        this.username = undefined;
-        this.password = undefined;
-        this._getLaugisticService.GetLaugisticName().subscribe(function (response) {
-            _this.GetLaugisticModelArray = response.data;
-            jQuery("#snackbar").html(response.message);
-            _this.myFunction();
-        });
-        this.pendingOrderFun();
-        console.log(this.GetLaugisticModelArray);
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+            this.username = undefined;
+            this.password = undefined;
+            this._getLaugisticService.GetLaugisticName().subscribe(function (response) {
+                _this.GetLaugisticModelArray = response.data;
+                jQuery("#snackbar").html(response.message);
+                _this.myFunction();
+            });
+            this.pendingOrderFun();
+            console.log(this.GetLaugisticModelArray);
+        }
     }
     PendingOrderComponent.prototype.pendingOrderFun = function () {
         var _this = this;

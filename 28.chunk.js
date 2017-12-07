@@ -11,7 +11,13 @@ var MeasurementAndDosageSizesService_1 = __webpack_require__("./src/app/services
 var MeasurementComponent = (function () {
     function MeasurementComponent(_addMeasurementService, router) {
         this._addMeasurementService = _addMeasurementService;
-        this.router = router;
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+        }
     }
     MeasurementComponent.prototype.AddMeasurement = function () {
         var _this = this;

@@ -17,12 +17,18 @@ var AddLogisticComponent = (function () {
         this.router = router;
         this.username = undefined;
         this.password = undefined;
-        this._getLaugisticService.GetLaugisticName().subscribe(function (response) {
-            _this.GetLaugisticModelArray = response.data;
-            jQuery("#snackbar").html(response.message);
-            _this.myFunction();
-        });
-        console.log(this.GetLaugisticModelArray);
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this._getLaugisticService.GetLaugisticName().subscribe(function (response) {
+                _this.GetLaugisticModelArray = response.data;
+                jQuery("#snackbar").html(response.message);
+                _this.myFunction();
+            });
+            console.log(this.GetLaugisticModelArray);
+        }
     }
     AddLogisticComponent.prototype.GetLaugisticId = function (LougisticId) {
         this.Lougistic_Id = LougisticId;

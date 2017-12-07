@@ -26,17 +26,23 @@ var DeleteProductComponent = (function () {
         this.GetChemistProductDataModelArray = [];
         this.GetAllProductCategory = [];
         this.GetAll_ProductModelArraySingle = [];
-        this.router = router;
-        this.chemistId = localStorage.getItem("GetChemistId");
-        this.ProductType = 100;
-        this._getChemistDataService.GetChemistService().subscribe(function (response) {
-            for (var i = 0; i < response.data.length; i++) {
-                _this.GetChemistProductDataModelArray.push(response.data[i]);
-            }
-            jQuery("#snackbar").html("Show Pharmacacy Name  Successfully");
-            _this.myFunction();
-            console.log('Chemist array', _this.GetChemistProductDataModelArray);
-        });
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+            this.chemistId = localStorage.getItem("GetChemistId");
+            this.ProductType = 100;
+            this._getChemistDataService.GetChemistService().subscribe(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    _this.GetChemistProductDataModelArray.push(response.data[i]);
+                }
+                jQuery("#snackbar").html("Show Pharmacacy Name  Successfully");
+                _this.myFunction();
+                console.log('Chemist array', _this.GetChemistProductDataModelArray);
+            });
+        }
     }
     DeleteProductComponent.prototype.getProductName = function (PharmacyId) {
         var _this = this;

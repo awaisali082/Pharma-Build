@@ -14,9 +14,15 @@ var AddSlotComponent = (function () {
         this._AddSlotService = _AddSlotService;
         this.GetLaugisticModelArray = [];
         this.GetLaugisticModeldata = [];
-        this.router = router;
-        this.username = undefined;
-        this.password = undefined;
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+            this.username = undefined;
+            this.password = undefined;
+        }
     }
     AddSlotComponent.prototype.GetLaugisticId = function (LougisticId) {
         this.Lougistic_Id = LougisticId;

@@ -17,7 +17,13 @@ var GetOrderComponent = (function () {
         this.GetAllProductModelArraySingle = [];
         this.GetAllProductDosageValue = [];
         this.GetChemistDataModelArray = [];
-        this.router = router;
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+        }
     }
     GetOrderComponent.prototype.getStatusValue = function (status) {
         var _this = this;

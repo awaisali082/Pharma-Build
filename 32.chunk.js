@@ -14,18 +14,24 @@ var DosageSizeComponent = (function () {
         this._addDosageAndSizeValuesService = _addDosageAndSizeValuesService;
         this.GetDosageModel = [];
         this.SingleDosageModel = [];
-        this.router = router;
-        this._addDosageAndSizeValuesService.getDosageValue().subscribe(function (response) {
-            console.log(response);
-            _this.GetDosageModel = response.data;
-            for (var i = 0; i < response.data.length; i++) {
-                var dosageObject = {
-                    Id: response.data[i].DosageAndSizes.Id,
-                    UnitName: response.data[i].DosageAndSizes.UnitName
-                };
-                _this.SingleDosageModel.push(dosageObject);
-            }
-        });
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+            this._addDosageAndSizeValuesService.getDosageValue().subscribe(function (response) {
+                console.log(response);
+                _this.GetDosageModel = response.data;
+                for (var i = 0; i < response.data.length; i++) {
+                    var dosageObject = {
+                        Id: response.data[i].DosageAndSizes.Id,
+                        UnitName: response.data[i].DosageAndSizes.UnitName
+                    };
+                    _this.SingleDosageModel.push(dosageObject);
+                }
+            });
+        }
     }
     DosageSizeComponent.prototype.getDosageId = function (DosageId) {
         this.DosageId = DosageId;

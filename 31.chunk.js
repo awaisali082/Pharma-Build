@@ -22,16 +22,22 @@ var GetCategorySubCategoryComponent = (function () {
         this.router = router;
         this.chemistId = localStorage.getItem("GetChemistId");
         this.ProductType = 100;
-        this._getChemistDataService.GetChemistService().subscribe(function (response) {
-            //  console.log(response);
-            for (var i = 0; i < response.data.length; i++) {
-                console.log(response.data[i]);
-                _this.GetChemistDataModelArray.push(response.data[i]);
-                jQuery("#snackbar1").html("Show Pharmacacy Name  Successfully");
-                _this.myFunction();
-            }
-            console.log('Chemist array', _this.GetChemistDataModelArray);
-        });
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this._getChemistDataService.GetChemistService().subscribe(function (response) {
+                //  console.log(response);
+                for (var i = 0; i < response.data.length; i++) {
+                    console.log(response.data[i]);
+                    _this.GetChemistDataModelArray.push(response.data[i]);
+                    jQuery("#snackbar1").html("Show Pharmacacy Name  Successfully");
+                    _this.myFunction();
+                }
+                console.log('Chemist array', _this.GetChemistDataModelArray);
+            });
+        }
     }
     GetCategorySubCategoryComponent.prototype.getCategory = function (PharmacistId) {
         var _this = this;

@@ -15,11 +15,17 @@ var GetChemistComponent = (function () {
         this.AllChemistDataModelCity = [];
         this.AllChemistDataModel = [];
         this.SingleChemistModel = [];
-        this.router = router;
-        this._getChemistDataService.GetAllCitiesService().subscribe(function (response) {
-            _this.AllChemistDataModelCity = response.data;
-        });
-        console.log('City Name', this.AllChemistDataModelCity);
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+            this._getChemistDataService.GetAllCitiesService().subscribe(function (response) {
+                _this.AllChemistDataModelCity = response.data;
+            });
+            console.log('City Name', this.AllChemistDataModelCity);
+        }
     }
     GetChemistComponent.prototype.getCityName = function (CityId) {
         var _this = this;

@@ -22,7 +22,13 @@ var UpdateOrderStatusComponent = (function () {
         this.GetLaugisticModelArray = [];
         this.GetLaugisticModeldata = [];
         this.PendingOrderServiceArray = [];
-        this.router = router;
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+        }
     }
     UpdateOrderStatusComponent.prototype.getStatusCategory = function (StatusName) {
         var _this = this;

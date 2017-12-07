@@ -20,16 +20,22 @@ var GetChemistByAreaComponent = (function () {
         this.GetAllCitiesModelArray = [];
         this.AllChemistDataModel = [];
         this.GetAreaNameModelArray = [];
-        this.router = router;
-        this.GetChemistId = localStorage.getItem("GetChemistId");
-        this.ProductType = 100;
-        this._getChemistDataService.GetChemistService().subscribe(function (response) {
-            _this.SingleChemistDataModel = response.data;
-            console.log('pharmacy name', _this.SingleChemistDataModel);
-            jQuery("#snackbar1").html(response.message);
-            _this.myFunction();
-            _this.getAllCities();
-        });
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this.router = router;
+            this.GetChemistId = localStorage.getItem("GetChemistId");
+            this.ProductType = 100;
+            this._getChemistDataService.GetChemistService().subscribe(function (response) {
+                _this.SingleChemistDataModel = response.data;
+                console.log('pharmacy name', _this.SingleChemistDataModel);
+                jQuery("#snackbar1").html(response.message);
+                _this.myFunction();
+                _this.getAllCities();
+            });
+        }
     }
     GetChemistByAreaComponent.prototype.getAllCities = function () {
         var _this = this;

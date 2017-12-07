@@ -21,14 +21,20 @@ var AddDiscountOfferComponent = (function () {
         this.router = router;
         this.ChemistId = localStorage.getItem("GetChemistId");
         console.log('chemist id', this.ChemistId);
-        this._AddDiscountOfferService.getDiscountOfferService(this.ChemistId).subscribe(function (response) {
-            console.log(response);
-            _this.DiscountOfferModelArray = response.data;
-            jQuery("#snackbar1").html(response.message);
-            _this.myFunction();
-        });
-        console.log("discountoffer", this.DiscountOfferModelArray);
-        this.GetProductName();
+        this.UserType = localStorage.getItem("UserType");
+        if (this.UserType == null) {
+            this.router.navigate(["/app/login"]);
+        }
+        else {
+            this._AddDiscountOfferService.getDiscountOfferService(this.ChemistId).subscribe(function (response) {
+                console.log(response);
+                _this.DiscountOfferModelArray = response.data;
+                jQuery("#snackbar1").html(response.message);
+                _this.myFunction();
+            });
+            console.log("discountoffer", this.DiscountOfferModelArray);
+            this.GetProductName();
+        }
     }
     AddDiscountOfferComponent.prototype.GetDiscountCustomValue = function (Custom_Value) {
         this.CustomValue = Custom_Value;
