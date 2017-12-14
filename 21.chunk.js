@@ -1,6 +1,6 @@
 webpackJsonpac__name_([21],{
 
-/***/ "./src/app/AddChemist/AddChemist.component.ts":
+/***/ "./src/app/GetChemistByArea/GetChemistByArea.component.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10,23 +10,24 @@ var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
 var AddAreaService_1 = __webpack_require__("./src/app/services/AddAreaService.ts");
 var GetChemistDataService_1 = __webpack_require__("./src/app/services/GetChemistDataService.ts");
 var AddchemistService_1 = __webpack_require__("./src/app/services/AddchemistService.ts");
-var AddChemistComponent = (function () {
-    function AddChemistComponent(_AddAreaNameService, _addChemistServiceService, _getChemistDataService, router) {
+var GetChemistByAreaComponent = (function () {
+    function GetChemistByAreaComponent(_AddAreaNameService, _addChemistServiceService, _getChemistDataService, router) {
         var _this = this;
         this._AddAreaNameService = _AddAreaNameService;
         this._addChemistServiceService = _addChemistServiceService;
         this._getChemistDataService = _getChemistDataService;
         this.SingleChemistDataModel = [];
         this.GetAllCitiesModelArray = [];
+        this.AllChemistDataModel = [];
         this.GetAreaNameModelArray = [];
-        this.router = router;
-        this.GetChemistId = localStorage.getItem("GetChemistId");
-        this.ProductType = 100;
         this.UserType = localStorage.getItem("UserType");
         if (this.UserType == null) {
             this.router.navigate(["/app/login"]);
         }
         else {
+            this.router = router;
+            this.GetChemistId = localStorage.getItem("GetChemistId");
+            this.ProductType = 100;
             this._getChemistDataService.GetChemistService().subscribe(function (response) {
                 _this.SingleChemistDataModel = response.data;
                 console.log('pharmacy name', _this.SingleChemistDataModel);
@@ -36,49 +37,42 @@ var AddChemistComponent = (function () {
             });
         }
     }
-    AddChemistComponent.prototype.getAllCities = function () {
+    GetChemistByAreaComponent.prototype.getAllCities = function () {
         var _this = this;
         this._getChemistDataService.GetAllCitiesService().subscribe(function (response) {
-            _this.GetAllCitiesModelArray = [];
             _this.GetAllCitiesModelArray = response.data;
             console.log(_this.GetAllCitiesModelArray);
             jQuery("#snackbar1").html(response.message);
             _this.myFunction();
         });
     };
-    AddChemistComponent.prototype.getAreaId = function (AreaId) {
+    GetChemistByAreaComponent.prototype.getAreaId = function (AreaId) {
+        var _this = this;
         this.getArea_Id = AreaId;
+        console.log(AreaId);
+        this._getChemistDataService.GetRegisteredChemistService().subscribe(function (response) {
+            console.log(response.data);
+            _this.AllChemistDataModel = [];
+            for (var i = 0; i < response.data.length; i++)
+                if (response.data[i].Chemist.AreaId == _this.getArea_Id) {
+                    _this.AllChemistDataModel = [];
+                    _this.AllChemistDataModel.push(response.data[i]);
+                }
+        });
     };
-    AddChemistComponent.prototype.getAllAreaName = function () {
-    };
-    AddChemistComponent.prototype.getCityName = function (cityId) {
+    GetChemistByAreaComponent.prototype.getCityName = function (cityId) {
         var _this = this;
         this.CityId = cityId;
         console.log(this.CityId);
         this._AddAreaNameService.getAreaName(this.CityId).subscribe(function (response) {
             console.log(response);
-            _this.GetAreaNameModelArray = [];
             _this.GetAreaNameModelArray = response.data;
             console.log('pharmacy name', _this.GetAreaNameModelArray);
             jQuery("#snackbar1").html(response.message);
             _this.myFunction();
         });
     };
-    AddChemistComponent.prototype.getPharmacyId = function (PharmacyID) {
-        var _this = this;
-        this.PharmacyId = PharmacyID;
-        console.log(this.PharmacyId);
-        var obj = this.SingleChemistDataModel.find(function (x) { return x.ChemistId == _this.PharmacyId; });
-        this.GetChemistId = obj.Chemist.Id;
-        localStorage.setItem("GetChemistId", obj.ChemistId.toString());
-        this.GetChemistId = localStorage.getItem("GetChemistId");
-        this.Address = obj.Chemist.Address;
-        this.FullName = obj.FullName;
-        console.log(obj);
-        console.log(this.Address);
-        console.log(this.FullName);
-    };
-    AddChemistComponent.prototype.ngOnInit = function () {
+    GetChemistByAreaComponent.prototype.ngOnInit = function () {
         setTimeout(function () {
             jQuery('#somecomponent').locationpicker({
                 location: {
@@ -96,12 +90,12 @@ var AddChemistComponent = (function () {
             });
         }, 3000);
     };
-    AddChemistComponent.prototype.addChemist = function () {
+    GetChemistByAreaComponent.prototype.addChemist = function () {
         var _this = this;
         this.Longitude = jQuery("#us7-lon").val();
         this.Latitude = jQuery("#us7-lat").val();
         console.log(this.Longitude);
-        if (!this.PharmaCommission || !this.ChemistEmail || !this.ChemistName || !this.ChemistPassword || !this.Longitude || !this.Latitude) {
+        if (!this.ChemistEmail || !this.ChemistName || !this.ChemistPassword || !this.Longitude || !this.Latitude) {
             //alert("empty");
             jQuery("#snackbar1").html("Please enter Empty field");
             this.myFunction();
@@ -113,17 +107,11 @@ var AddChemistComponent = (function () {
                 this.Latitude = jQuery("#us7-lat").val();
                 this.ChemistId = localStorage.getItem("GetChemistId");
                 console.log(this.ChemistId);
-                this._addChemistServiceService.AddChemist(this.getArea_Id, this.ChemistEmail, this.PharmaCommission, this.CityId, this.ChemistName, this.ChemistPassword, this.Longitude, this.Latitude, this.PharmacyId).subscribe(function (response) {
+                this._addChemistServiceService.AddChemist(this.getArea_Id, this.ChemistEmail, this.CityId, this.ChemistName, this.ChemistPassword, this.Longitude, this.Latitude, this.PharmacyId).subscribe(function (response) {
                     console.log(response.data);
                     jQuery("#snackbar1").html("Add Chemist Successfully");
                     _this.myFunction();
                 });
-                this.ChemistEmail = undefined;
-                this.PharmaCommission = undefined;
-                this.ChemistName = undefined;
-                this.ChemistPassword = undefined;
-                this.Latitude = undefined;
-                this.Longitude = undefined;
             }
             else {
                 jQuery("#snackbar1").html("Email is not Valid");
@@ -131,7 +119,7 @@ var AddChemistComponent = (function () {
             }
         }
     };
-    AddChemistComponent.prototype.myFunction = function () {
+    GetChemistByAreaComponent.prototype.myFunction = function () {
         // Get the snackbar DIV
         var x = document.getElementById("snackbar1");
         // Add the "show" class to DIV
@@ -139,29 +127,29 @@ var AddChemistComponent = (function () {
         // After 3 seconds, remove the show class from DIV
         setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
     };
-    AddChemistComponent = __decorate([
+    GetChemistByAreaComponent = __decorate([
         core_1.Component({
-            selector: 'AddChemist',
+            selector: 'GetChemistByArea',
             providers: [AddchemistService_1.AddchemistService, GetChemistDataService_1.GetChemistDataService, AddAreaService_1.AddAreaService],
-            styles: [__webpack_require__("./src/app/AddChemist/AddChemist.style.scss")],
-            template: __webpack_require__("./src/app/AddChemist/AddChemist.template.html"),
+            styles: [__webpack_require__("./src/app/GetChemistByArea/GetChemistByArea.style.scss")],
+            template: __webpack_require__("./src/app/GetChemistByArea/GetChemistByArea.template.html"),
             encapsulation: core_1.ViewEncapsulation.None,
             host: {
                 class: 'chemist-page app'
             },
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof AddAreaService_1.AddAreaService !== 'undefined' && AddAreaService_1.AddAreaService) === 'function' && _a) || Object, (typeof (_b = typeof AddchemistService_1.AddchemistService !== 'undefined' && AddchemistService_1.AddchemistService) === 'function' && _b) || Object, (typeof (_c = typeof GetChemistDataService_1.GetChemistDataService !== 'undefined' && GetChemistDataService_1.GetChemistDataService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
-    ], AddChemistComponent);
-    return AddChemistComponent;
+    ], GetChemistByAreaComponent);
+    return GetChemistByAreaComponent;
     var _a, _b, _c, _d;
 }());
-exports.AddChemistComponent = AddChemistComponent;
+exports.GetChemistByAreaComponent = GetChemistByAreaComponent;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
 
 /***/ },
 
-/***/ "./src/app/AddChemist/AddChemist.module.ts":
+/***/ "./src/app/GetChemistByArea/GetChemistByArea.module.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -170,19 +158,19 @@ var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var AddChemist_component_1 = __webpack_require__("./src/app/AddChemist/AddChemist.component.ts");
+var GetChemistByArea_component_1 = __webpack_require__("./src/app/GetChemistByArea/GetChemistByArea.component.ts");
 __webpack_require__("./node_modules/jquery-locationpicker/src/locationpicker.jquery.js");
 exports.routes = [
-    { path: '', component: AddChemist_component_1.AddChemistComponent, pathMatch: 'full' }
+    { path: '', component: GetChemistByArea_component_1.GetChemistByAreaComponent, pathMatch: 'full' }
 ];
-var AddChemistModule = (function () {
-    function AddChemistModule() {
+var GetChemistByAreaModule = (function () {
+    function GetChemistByAreaModule() {
     }
-    AddChemistModule.routes = exports.routes;
-    AddChemistModule = __decorate([
+    GetChemistByAreaModule.routes = exports.routes;
+    GetChemistByAreaModule = __decorate([
         core_1.NgModule({
             declarations: [
-                AddChemist_component_1.AddChemistComponent
+                GetChemistByArea_component_1.GetChemistByAreaComponent
             ],
             imports: [
                 common_1.CommonModule,
@@ -191,26 +179,26 @@ var AddChemistModule = (function () {
             ]
         }), 
         __metadata('design:paramtypes', [])
-    ], AddChemistModule);
-    return AddChemistModule;
+    ], GetChemistByAreaModule);
+    return GetChemistByAreaModule;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = AddChemistModule;
+exports.default = GetChemistByAreaModule;
 
 
 /***/ },
 
-/***/ "./src/app/AddChemist/AddChemist.style.scss":
+/***/ "./src/app/GetChemistByArea/GetChemistByArea.style.scss":
 /***/ function(module, exports) {
 
-module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n#CityName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n#AreaName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n.valuesAddress {\n  display: inline-flex;\n  margin-bottom: 5px; }\n\n#PharmacyName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n#us7-lat {\n  width: 237px; }\n\n#us7-lon {\n  width: 237px; }\n\n#us7-radius {\n  width: 250px; }\n\n#us7-address {\n  width: 250px; }\n\n#measurementName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n.addbtn {\n  width: 235px;\n  color: white !important; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n#snackbar1 {\n  visibility: hidden;\n  /* Hidden by default. Visible on click */\n  min-width: 250px;\n  /* Set a default minimum width */\n  margin-left: -125px;\n  /* Divide value of min-width by 2 */\n  background-color: #333;\n  /* Black background color */\n  color: #fff;\n  /* White text color */\n  text-align: center;\n  /* Centered text */\n  border-radius: 2px;\n  /* Rounded borders */\n  padding: 16px;\n  /* Padding */\n  position: fixed;\n  /* Sit on top of the screen */\n  z-index: 1;\n  /* Add a z-index if needed */\n  left: 50%;\n  /* Center the snackbar */\n  bottom: 30px;\n  /* 30px from the bottom */ }\n\nagm-map {\n  height: 300px; }\n\n.AddDosage {\n  width: 297px; }\n\n.AddSize {\n  width: 297px; }\n\n/* Show the snackbar when clicking on a button (class added with JavaScript) */\n#snackbar1.show {\n  visibility: visible;\n  /* Show the snackbar */\n  /* Add animation: Take 0.5 seconds to fade in and out the snackbar. \r\nHowever, delay the fade out process for 2.5 seconds */\n  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;\n  animation: fadein 0.5s, fadeout 0.5s 2.5s; }\n\n/* Animations to fade the snackbar in and out */\n@-webkit-keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@-webkit-keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n\n@keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n"
+module.exports = ".login-page {\n  background-color: #ddd; }\n\n.login-page .page-footer {\n  margin-bottom: 25px;\n  font-size: 13px;\n  color: #818a91;\n  text-align: center; }\n  @media (min-height: 600px) {\n    .login-page .page-footer {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      right: 0; } }\n\n#PharmacyName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n#us7-lat {\n  width: 237px; }\n\n#us7-lon {\n  width: 237px; }\n\n#us7-radius {\n  width: 260px; }\n\n#us7-address {\n  width: 260px; }\n\n#measurementName {\n  height: 31px;\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef;\n  width: 100%;\n  margin-bottom: 14px; }\n\n.addbtn {\n  width: 235px;\n  color: white !important; }\n\n.widget-login-container {\n  padding-top: 10%; }\n\n.widget-login-logo {\n  margin-top: 15px;\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: 400; }\n  .widget-login-logo .fa-circle {\n    font-size: 13px;\n    margin: 0 20px; }\n\n.widget-login {\n  padding: 30px; }\n  .widget-login > header h1, .widget-login > header h2, .widget-login > header h3, .widget-login > header h4, .widget-login > header h5, .widget-login > header h6 {\n    font-weight: 400;\n    text-align: center; }\n\n.widget-login-info {\n  font-size: 13px;\n  color: #888;\n  margin-top: 1px;\n  margin-bottom: 0;\n  text-align: center; }\n  .widget-login-info.abc-checkbox {\n    margin-left: -25px; }\n\n.login-form .form-control {\n  font-size: 13px;\n  border: none;\n  background-color: #eceeef; }\n  .login-form .form-control:focus {\n    background-color: #ddd; }\n\n#snackbar1 {\n  visibility: hidden;\n  /* Hidden by default. Visible on click */\n  min-width: 250px;\n  /* Set a default minimum width */\n  margin-left: -125px;\n  /* Divide value of min-width by 2 */\n  background-color: #333;\n  /* Black background color */\n  color: #fff;\n  /* White text color */\n  text-align: center;\n  /* Centered text */\n  border-radius: 2px;\n  /* Rounded borders */\n  padding: 16px;\n  /* Padding */\n  position: fixed;\n  /* Sit on top of the screen */\n  z-index: 1;\n  /* Add a z-index if needed */\n  left: 50%;\n  /* Center the snackbar */\n  bottom: 30px;\n  /* 30px from the bottom */ }\n\nagm-map {\n  height: 300px; }\n\n.AddDosage {\n  width: 297px; }\n\n.AddSize {\n  width: 800px; }\n\n#CityName {\n  width: 100%;\n  height: 30px;\n  background-color: #eceeef;\n  margin-bottom: 13px; }\n\n#AreaName {\n  width: 100%;\n  height: 30px;\n  background-color: #eceeef;\n  margin-bottom: 13px; }\n\n/* Show the snackbar when clicking on a button (class added with JavaScript) */\n#snackbar1.show {\n  visibility: visible;\n  /* Show the snackbar */\n  /* Add animation: Take 0.5 seconds to fade in and out the snackbar. \r\nHowever, delay the fade out process for 2.5 seconds */\n  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;\n  animation: fadein 0.5s, fadeout 0.5s 2.5s; }\n\n/* Animations to fade the snackbar in and out */\n@-webkit-keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@keyframes fadein {\n  from {\n    bottom: 0;\n    opacity: 0; }\n  to {\n    bottom: 30px;\n    opacity: 1; } }\n\n@-webkit-keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n\n@keyframes fadeout {\n  from {\n    bottom: 30px;\n    opacity: 1; }\n  to {\n    bottom: 0;\n    opacity: 0; } }\n"
 
 /***/ },
 
-/***/ "./src/app/AddChemist/AddChemist.template.html":
+/***/ "./src/app/GetChemistByArea/GetChemistByArea.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div id=\"snackbar1\"></div>\r\n<div class=\"row\">\r\n  <div class=\"container\">\r\n    <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-3 col-md-5\">\r\n          <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n\r\n          </h5>\r\n          <section class=\"widget widget-login  AddSize animated fadeInUp\">\r\n            <header>\r\n              <h3 style=\"text-transform:uppercase;\">ADD Chemist</h3>\r\n            </header>\r\n            <div class=\"widget-body\">\r\n              <p class=\"widget-login-info\">\r\n\r\n              </p>\r\n              <p class=\"widget-login-info\">\r\n\r\n              </p>\r\n\r\n              <form class=\"login-form mt-lg\">\r\n                <select id=\"PharmacyName\" (change)=\"getPharmacyId($event.target.value)\">\r\n                  <option disabled selected value> -- select an option -- </option>\r\n\r\n                  <option *ngFor=\"let PharmacistName of SingleChemistDataModel\" value=\"{{PharmacistName.Chemist.Id}}\">{{PharmacistName.Chemist.PharmacyName}}</option>\r\n                </select>\r\n                <div class=\"form-group\">\r\n                  <input class=\"form-control\" id=\"pswd\" required [(ngModel)]=\"FullName\" name=\"FullName\" type=\"email\" placeholder=\"Full Name\"\r\n                    readonly>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <input class=\"form-control\" id=\"pswd\" required [(ngModel)]=\"Address\" name=\"Address\" type=\"email\" placeholder=\"Address\" readonly>\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <input class=\"form-control\" id=\"pswd\" required [(ngModel)]=\"ChemistEmail\" name=\"ChemistEmail\" type=\"email\" placeholder=\"Enter Email\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input class=\"form-control\" id=\"pswd\" required [(ngModel)]=\"PharmaCommission\" name=\"PharmaCommission\" type=\"text\" placeholder=\"Enter Pharma Commission\">\r\n                  </div>\r\n                <select id=\"CityName\" (change)=\"getCityName($event.target.value)\">\r\n                  <option disabled selected value> -- select an option -- </option>\r\n\r\n                  <option *ngFor=\"let CityName of GetAllCitiesModelArray\" value=\"{{CityName.Id}}\">{{CityName.Name}}</option>\r\n                </select>\r\n                <select id=\"AreaName\" (change)=\"getAreaId($event.target.value)\">\r\n                  <option disabled selected value> -- select an option -- </option>\r\n\r\n                  <option *ngFor=\"let AreaName of GetAreaNameModelArray\" value=\"{{AreaName.Id}}\">{{AreaName.Name}}</option>\r\n                </select>\r\n\r\n                <div class=\"form-group\">\r\n                  <input class=\"form-control\" id=\"pswd\" [(ngModel)]=\"ChemistName\" name=\"ChemistName\" type=\"text\" placeholder=\"Enter UserName\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <input class=\"form-control\" id=\"pswd\" [(ngModel)]=\"ChemistPassword\" required=\"required\" name=\"ChemistPassword\" type=\"password\"\r\n                    placeholder=\"Enter Password\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <input class=\"form-control\" id=\"us7-lat\" [(ngModel)]=\"Latitude\" name=\"Latitude\" type=\"text\" placeholder=\"Enter Latitude \">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                  <input class=\"form-control\" id=\"us7-lon\" [(ngModel)]=\"Longitude\" name=\"Longitude\" type=\"text\" placeholder=\"Enter Longitude\">\r\n                </div>\r\n\r\n                <div class=\"clearfix\">\r\n                  <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                    <!--   <button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button> -->\r\n                    <a class=\"btn addbtn btn-inverse btn-sm\" (click)=\"addChemist()\">Add</a>\r\n                  </div>\r\n                </div>\r\n                <div class=\"row m-t-1\">\r\n                  <div class=\"col-md-6 push-md-6\">\r\n                    <div class=\"clearfix\">\r\n                      <!--  <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div> -->\r\n                    </div>\r\n                  </div>\r\n\r\n                  <!--  <div class=\"col-md-6 pull-md-6\">\r\n                  <a class=\"mr-n-lg\" href=\"#\">Trouble with account?</a>\r\n                </div> -->\r\n                </div>\r\n              </form>\r\n            </div>\r\n          </section>\r\n        </div>\r\n\r\n        <div class=\"col-xs-3 col-md-5\">\r\n          <div class=\"valuesAddress\">\r\n          <input class=\"form-control\" id=\"us7-radius\" name=\"Radius\" type=\"number\" placeholder=\"Enter Radius\">\r\n          <input class=\"form-control\" id=\"us7-address\" name=\"Address\" type=\"text\" placeholder=\"Enter Address\">\r\n        </div>\r\n          <div id=\"somecomponent\" style=\"width: 500px; height: 400px;\">\r\n\r\n          </div>\r\n\r\n        </div>\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n      </div>\r\n    </main>\r\n    <!--  <footer class=\"page-footer\">\r\n    2016 &copy; Sing. Admin Dashboard Template.\r\n  </footer> -->\r\n  </div>\r\n\r\n</div>"
+module.exports = "<div id=\"snackbar1\"></div>\r\n<div class=\"row\">\r\n<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xs-3 col-md-5\">\r\n        <h5 class=\"widget-login-logo animated  fadeInUp\">\r\n          \r\n        </h5>\r\n        <section class=\"widget widget-login  AddSize animated fadeInUp\">\r\n          <header>\r\n            <h3 style=\"text-transform:uppercase;\">Nearby Chemist </h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <p class=\"widget-login-info\">\r\n             \r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n           \r\n            </p>\r\n            \r\n            <form class=\"login-form mt-lg\">\r\n              \r\n            <select id=\"CityName\"(change)=\"getCityName($event.target.value)\">\r\n              <option disabled selected value> -- select an option -- </option>\r\n          \r\n       <option *ngFor=\"let CityName of GetAllCitiesModelArray\" value=\"{{CityName.Id}}\">{{CityName.Name}}</option>\r\n           </select>\r\n           <select id=\"AreaName\"(change)=\"getAreaId($event.target.value)\">\r\n              <option disabled selected value> -- select an option -- </option>\r\n          \r\n       <option *ngFor=\"let AreaName of GetAreaNameModelArray\" value=\"{{AreaName.Id}}\">{{AreaName.Name}}</option>\r\n           </select>\r\n        \r\n              <div class=\"clearfix\">\r\n                <table class=\"table table-hover\">\r\n                  \r\n                      <tr>\r\n                          <td>Pharmacy Name</td>\r\n                          <td>Address</td>\r\n                          <td>City</td>\r\n                          <td>Latitude</td>\r\n                          <td>Longitude</td>\r\n                          <td>Mobile Number</td>\r\n                      </tr>\r\n                     \r\n                    <tr  *ngFor=\" let row1 of AllChemistDataModel\">\r\n                     \r\n                        <td>{{row1.Chemist.PharmacyName}}</td>\r\n                        <td>{{row1.Chemist.Address}}</td>\r\n                        <td>{{row1.Chemist.City.Name}}</td>\r\n                        <td>{{row1.Chemist.Latitude}}</td>\r\n                        <td>{{row1.Chemist.Longitude}}</td>\r\n                        <td>{{row1.MobileNumber}}</td>\r\n                       \r\n\r\n                    </tr>\r\n                  \r\n                     \r\n                  \r\n                  \r\n              </table> \r\n                           </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                  </div>\r\n                </div>\r\n\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n      </div>      \r\n    </div>\r\n  </main>\r\n <!--  <footer class=\"page-footer\">\r\n    2016 &copy; Sing. Admin Dashboard Template.\r\n  </footer> -->\r\n</div>\r\n\r\n</div>\r\n"
 
 /***/ },
 
